@@ -5,6 +5,7 @@ import { useState } from "react";
 import { ListCard } from "../ListCard/ListCard";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchLists, getLists } from "../../slices/listsSlice";
+import { CardModal } from "../CardModal/CardModal";
 
 // type BoardType = {
 //   board: any;
@@ -37,6 +38,7 @@ export const PageContent = ({ board } /*: BoardType*/) => {
   const cards = useSelector((state) => state.cards.contents);
 
   return (
+    <>
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <Box
         sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", border: "1px solid #E4EBFA", backgroundColor: "background.default" }}
@@ -108,7 +110,7 @@ export const PageContent = ({ board } /*: BoardType*/) => {
               </Box>
             );
           })}
-          <Box mt={4.5} mb={4} sx={{ borderRadius: "6px", width: "200px", maxWidth: "200px", flexGrow: 1, backgroundColor: "lightgreen", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+          <Box mt={4.5} mb={4} mr={2} sx={{ borderRadius: "6px", width: "200px", maxWidth: "200px", flexGrow: 1, backgroundColor: "lightgreen", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
             <Typography
               sx={{ color: "secondary.dark" }}
               fontWeight="600"
@@ -119,5 +121,9 @@ export const PageContent = ({ board } /*: BoardType*/) => {
         </Box>
       )}
     </Box>
+
+
+    <CardModal />
+    </>
   );
 };

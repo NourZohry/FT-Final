@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   contents: {},
+  selected: null,
   isLoading: false,
   error: null,
 };
@@ -15,7 +16,11 @@ export const fetchCards = createAsyncThunk("cards/fetchCards", async (listId) =>
 export const cardsSlice = createSlice({
   name: "cards",
   initialState,
-  reducers: {},
+  reducers: {
+    setSelected: (state, action) => {
+      state.selected = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchCards.pending, (state) => {
       state.isLoading = true;
@@ -31,6 +36,8 @@ export const cardsSlice = createSlice({
   },
 });
 
+export const { setSelected } = cardsSlice.actions;
+export const getSelected = (state) => state.selected;
 export const getCards = (state) => state.contents;
 
 export default cardsSlice.reducer;
