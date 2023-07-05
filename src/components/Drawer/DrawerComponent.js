@@ -34,7 +34,7 @@ export const DrawerComponent = () => {
 
   return (
     <>
-      <Box sx={{ display: isDrawerOpen ? "flex" : "" }}>
+      <Box sx={{ display: "flex" }}>
         <Drawer
           sx={{
             width: 260,
@@ -148,7 +148,7 @@ export const DrawerComponent = () => {
           </Box>
         </Drawer>
 
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ flexGrow: 1, marginLeft: isDrawerOpen ? 0 : "-260px" }}>
           {/* Page Content Here */}
           <PageContent board={selectedBoard}/>
         </Box>

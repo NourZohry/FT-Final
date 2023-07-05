@@ -3,6 +3,8 @@ import { List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Butt
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useState } from "react";
 import { ListCard } from "../ListCard/ListCard";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchLists, getLists } from "../../slices/listsSlice";
 
 // type BoardType = {
 //   board: any;
@@ -13,42 +15,26 @@ import { ListCard } from "../ListCard/ListCard";
 //   length: number
 // }
 
-export const PageContent = ({ board } /*: BoardType*/) => {
-  const [lists, setLists] = useState([]);
-  const [cards, setCards] = useState({});
-  React.useEffect(() => {
-    // console.log(board);
-    if (board.id) {
-    fetch("https://api.trello.com/1/boards/" + board.id + "/lists?key=c7402336c002e9d44024966d4591bd29&token=ATTA859fe62b508ce78f6c665b7ca8298d724597956bcedb673e4ffc1bac284faeb8F9C234F6")
-      .then((res) => res.json())
-      .then((data) => setLists(data))
+function calculateCardCountForList(cards, listId) {
+  return Object.keys(cards).map((key, it) => {
+    if (key === listId) {
+      return cards[key].filter((card) => card.idList === listId).length;
     }
-  }, [board]);
+  });
+}
 
-  // React.useEffect(() => {
-  //   // let listData = [];
-  //   let listData = {};
-  //   lists.map(list => {
-  //     // console.log(list.id)
-  //     fetch("https://api.trello.com/1/lists/" + list.id + "/cards?key=c7402336c002e9d44024966d4591bd29&token=ATTA859fe62b508ce78f6c665b7ca8298d724597956bcedb673e4ffc1bac284faeb8F9C234F6")
-  //     .then((res) => res.json())
-  //     // .then((data) => console.log(data))
-  //     // .then((data) => listData.push(data))
-  //     .then((data) => listData[list.id] = data)
-  //     // .then(() => console.log(listData))
-  //   })
-  //   console.log(listData);
-  //   setCards(listData);
+export const PageContent = ({ board } /*: BoardType*/) => {
+  const dispatch = useDispatch();
 
-  // }, [lists])
+  React.useEffect(() => {
+    if (board.id) dispatch(fetchLists(board.id));
+  }, [dispatch, board]);
 
-  // React.useEffect(() => {
-  //   fetch("https://api.trello.com/1/boards/" + board.id + "/lists?key=c7402336c002e9d44024966d4591bd29&token=ATTA859fe62b508ce78f6c665b7ca8298d724597956bcedb673e4ffc1bac284faeb8F9C234F6")
-  //     .then((res) => res.json())
-  //     .then((data) => setLists(data));
-  // }, [board]);
+  const contents = useSelector((state) => state.lists.contents);
+  const isLoading = useSelector((state) => state.lists.isLoading);
+  // const error = useSelector((state) => state.lists.error)
 
-  // https://api.trello.com/1/boards/{id}/cards?key=APIKey&token=APIToken
+  const cards = useSelector((state) => state.cards.contents);
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
@@ -71,7 +57,18 @@ export const PageContent = ({ board } /*: BoardType*/) => {
         </Box>
       </Box>
 
-      {(!lists || lists.length === 0) && (
+      {isLoading === true && (
+        <Box sx={{ flexGrow: 1, backgroundColor: "secondary.main", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "20px" }}>
+          <Typography
+            sx={{ color: "secondary.dark" }}
+            fontWeight="600"
+          >
+            Loading...
+          </Typography>
+        </Box>
+      )}
+
+      {isLoading === false && contents.length === 0 && (
         <Box sx={{ flexGrow: 1, backgroundColor: "secondary.main", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "20px" }}>
           <Typography
             sx={{ color: "secondary.dark" }}
@@ -83,30 +80,42 @@ export const PageContent = ({ board } /*: BoardType*/) => {
         </Box>
       )}
 
-        {/* {console.log(Object.keys(cards))} */}
-      {lists && lists.length !== 0 && (
-        <Box sx={{ display: "flex", gap: "10px" }}>
-          {lists.map((list, i) => {
+      {/* {console.log(Object.keys(cards))} */}
+      {isLoading === false && contents.length !== 0 && (
+        <Box sx={{ flexGrow: 1, backgroundColor: "secondary.main", display: "flex", gap: "10px" }}>
+          {contents.map((list, i) => {
             return (
-              <Box sx={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                <Typography
-                  ml={3}
-                  mt={5}
-                  mb={2}
-                  sx={{ textTransform: "uppercase", color: "secondary.dark" }}
-                  fontSize="12px"
-                  letterSpacing={"1px"}
-                  key={i}
-                >
-                  {list.name} (num)
-                </Typography>
+              <Box
+                sx={{ display: "flex", flexDirection: "column", gap: "10px" }}
+                p={1}
+              >
+                <Box sx={{ display: "flex", alignItems: "start", justifyContent: "start", gap: "5px" }}>
+                  <Box sx={{ width: "10px", height: "10px", backgroundColor: "red", borderRadius: "50%", flexShrink: 0, marginTop: "5px" }}></Box>
+
+                  <Typography
+                    sx={{ textTransform: "uppercase", color: "secondary.dark" }}
+                    fontSize="12px"
+                    letterSpacing={"1px"}
+                    key={i}
+                    display="inline"
+                  >
+                    {list.name} {"("}
+                    {cards && calculateCardCountForList(cards, list.id)}
+                    {")"}
+                  </Typography>
+                </Box>
                 <ListCard list={list} />
-                {/* {cards && <Typography>hellooo */}
-                  {/* {console.log(cards['5f5f2b71c407125e4401dc48'])} */}
-                {/* </Typography>} */}
               </Box>
             );
           })}
+          <Box mt={4.5} mb={4} sx={{ borderRadius: "6px", width: "200px", maxWidth: "200px", flexGrow: 1, backgroundColor: "lightgreen", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+            <Typography
+              sx={{ color: "secondary.dark" }}
+              fontWeight="600"
+            >
+              + New Column
+            </Typography>
+          </Box>
         </Box>
       )}
     </Box>

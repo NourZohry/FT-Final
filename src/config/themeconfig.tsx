@@ -14,7 +14,7 @@ export enum commonPalette {
 
 export enum lightThemePalette {
   BG = "#FFFFFF",
-  BG2 = "#E4EBFA",
+  BG2 = "#F4F7FD",
   BG3 = "#F4F7FD",
 }
 
