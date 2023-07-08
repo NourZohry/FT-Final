@@ -34,19 +34,19 @@ export const ListCard = ({ list }) => {
     <>
     <Box sx={{width: "200px"}}>
       {cards &&
-        Object.keys(cards).map((key) => {
+        Object.keys(cards).map((key, i) => {
           return (
-            <>
-              {cards[key].filter(card => card.idList === list.id).length > 0 && cards[key].map((card) => {
+            <Box key={i}>
+              {cards[key].filter(card => card.idList === list.id).length > 0 && cards[key].map((card, j) => {
                 // return <Typography>{card.idList === list.id && card.name}</Typography>;
                 return (
-                  <Box onClick={() => {dispatch(setSelected(card)); dispatch(setOpen())}}
+                  <Box key={j} onClick={() => {dispatch(setSelected(card)); dispatch(setOpen())}}
                   sx={{backgroundColor:"background.default", width: "200px", borderRadius: "8px", boxShadow: "0px 4px 6px 0px rgba(54, 78, 126, 0.10)"}} p={2} mb={2}>
                     <Typography fontWeight={"700"} fontSize={"14px"}>{card.idList === list.id && card.name}</Typography>
                   </Box>
                 );
               })}
-            </>
+            </Box>
           );
         })}
     </Box>

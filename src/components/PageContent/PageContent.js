@@ -6,6 +6,9 @@ import { ListCard } from "../ListCard/ListCard";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchLists, getLists } from "../../slices/listsSlice";
 import { CardModal } from "../CardModal/CardModal";
+import { BoardModal } from "../BoardModal/BoardModal";
+import { setOpen, getIsOpen } from "../../slices/boardModalSlice";
+
 
 // type BoardType = {
 //   board: any;
@@ -29,6 +32,7 @@ export const PageContent = ({ board } /*: BoardType*/) => {
 
   React.useEffect(() => {
     if (board.id) dispatch(fetchLists(board.id));
+    // setShowBoardModal(false);
   }, [dispatch, board]);
 
   const contents = useSelector((state) => state.lists.contents);
@@ -41,16 +45,26 @@ export const PageContent = ({ board } /*: BoardType*/) => {
 
 
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
+  const openMenu = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+  const handleCloseMenu = () => {
     setAnchorEl(null);
   };
 
+  
+  // const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <>
+      {<AddNewTaskModal />}
+      {<BoardModal board={board} lists={contents} page={true} />}
+
       <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
         <Box
           sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", border: "1px solid #E4EBFA", backgroundColor: "background.default" }}
@@ -61,31 +75,27 @@ export const PageContent = ({ board } /*: BoardType*/) => {
               fontWeight="700"
               fontSize="20px"
             >
-              {/* {board.name} */}
+              {board.name}
             </Typography>
           </Box>
 
           <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <Button variant="contained"
-                    id="basic-button"
-                    aria-controls={open ? 'basic-menu' : undefined}
-                    aria-haspopup="true"
-                    aria-expanded={open ? 'true' : undefined}
-                    onClick={handleClick}
+                    onClick={() => setShowModal(true)}
                     >+ Add New Task</Button>
             <Menu
               id="basic-menu"
               anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
+              open={openMenu}
+              onClose={handleCloseMenu}
               MenuListProps={{
                 "aria-labelledby": "basic-button",
               }}
             >
-              <MenuItem onClick={handleClose}>Edit Board</MenuItem>
-              <MenuItem onClick={handleClose}>Delete Board</MenuItem>
+              <MenuItem onClick={() => {handleCloseMenu(); dispatch(setOpen())}}>Edit Board</MenuItem>
+              <MenuItem onClick={() => {handleCloseMenu(); dispatch(setOpen())}}>Delete Board</MenuItem>
             </Menu>
-            <MoreVertIcon sx={{ color: "secondary.dark" }} />
+            <MoreVertIcon onClick={handleClick} sx={{ color: "secondary.dark" }} />
           </Box>
         </Box>
 
@@ -120,6 +130,7 @@ export const PageContent = ({ board } /*: BoardType*/) => {
                 <Box
                   sx={{ display: "flex", flexDirection: "column", gap: "10px" }}
                   p={1}
+                  key={i}
                 >
                   <Box sx={{ display: "flex", alignItems: "start", justifyContent: "start", gap: "5px" }}>
                     <Box sx={{ width: "10px", height: "10px", backgroundColor: "red", borderRadius: "50%", flexShrink: 0, marginTop: "5px" }}></Box>

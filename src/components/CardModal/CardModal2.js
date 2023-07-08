@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { setClosed, getIsOpen } from "../../slices/modalSlice";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { TextField, FormControl, InputLabel, MenuItem, Select, Container, Modal, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Button, Typography, Box, Drawer, Switch } from "@mui/material";
-import { fetchCards } from "../../slices/cardsSlice";
-import { fetchLists } from "../../slices/listsSlice";
 
 const MODAL_HEIGHT = 450;
 
@@ -19,21 +17,11 @@ export const CardModal = () => {
     setStatus(event.target.value);
   };
 
-  const handleTitleChange = (event) => {
-    setCardTitle(event.target.value);
-  };
-
-  const handleDescChange = (event) => {
-    setCardDesc(event.target.value);
-  };
-
   const lists = useSelector((state) => state.lists.contents);
+  // console.log(lists);
 
   const [listOfCard, setListOfCard] = React.useState();
   const [editMode, setEditMode] = React.useState(false);
-
-  const [cardTitle, setCardTitle] = React.useState(card ? card.name : "");
-  const [cardDesc, setCardDesc] = React.useState(card ? card.desc : "");
 
   React.useEffect(() => {
     setEditMode(false);
@@ -44,17 +32,11 @@ export const CardModal = () => {
   }, [card]);
 
   function updateCard() {
-    console.log(card.id);
-    console.log(cardTitle);
-    console.log(cardDesc);
-    console.log(status.id);
-    console.log(listOfCard);
-    fetch("https://api.trello.com/1/cards/" + card.id + "?" + "&name=" + cardTitle + "&desc=" + cardDesc + (status.id ? "&idList=" + status.id : "") + "&key=c7402336c002e9d44024966d4591bd29&token=ATTA859fe62b508ce78f6c665b7ca8298d724597956bcedb673e4ffc1bac284faeb8F9C234F6", {
-      method: "PUT",
-    })
-      .then(() => dispatch(fetchCards(listOfCard.id)))
-      .then(() => dispatch(fetchLists(listOfCard.idBoard)));
-    // .then(() => dispa)
+    console.log(card.id)
+    fetch("https://api.trello.com/1/cards/" + card.id + "?name=testsuccessful" + "&key=c7402336c002e9d44024966d4591bd29&token=ATTA859fe62b508ce78f6c665b7ca8298d724597956bcedb673e4ffc1bac284faeb8F9C234F6",
+    {
+      method: "PUT"
+    }).then(() => dispatch(fetchCards(list.id)))
   }
 
   return (
@@ -130,15 +112,8 @@ export const CardModal = () => {
                         listOfCard &&
                         lists
                           .filter((list) => list.boardId === listOfCard.boardId)
-                          .map((list, i) => {
-                            return (
-                              <MenuItem
-                                key={i}
-                                value={list}
-                              >
-                                {list.name}
-                              </MenuItem>
-                            );
+                          .map((list) => {
+                            return <MenuItem value={list}>{list.name}</MenuItem>;
                           })}
                     </Select>
                   </FormControl>
@@ -146,12 +121,6 @@ export const CardModal = () => {
               )}
               {editMode === true && (
                 <>
-                                    <Typography
-                      fontSize={"18px"}
-                      fontWeight={"700"}
-                    >
-                      {true && card.name}
-                    </Typography>
                   <Typography
                     id="modal-modal-description"
                     sx={{ mt: 2 }}
@@ -166,7 +135,6 @@ export const CardModal = () => {
                     id="outlined-basic"
                     defaultValue={card.name}
                     variant="outlined"
-                    onChange={handleTitleChange}
                   />
 
                   <Typography
@@ -185,7 +153,6 @@ export const CardModal = () => {
                     defaultValue={card.desc}
                     label="e.g. It's always good to take a break. This 15 minute break will recharge the batteries a little."
                     variant="outlined"
-                    onChange={handleDescChange}
                   />
 
                   <Typography
