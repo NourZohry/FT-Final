@@ -154,7 +154,7 @@ export const DrawerComponent = () => {
 
         <Box sx={{ flexGrow: 1, marginLeft: isDrawerOpen ? 0 : "-260px" }}>
           {/* Page Content Here */}
-          {console.log(boards.filter(boardItem => boardItem === selectedBoard))}
+          {/* {console.log(boards.filter(boardItem => boardItem === selectedBoard))} */}
           <PageContent board={boards && selectedBoard ? boards.find(boardItem => boardItem.id === selectedBoard.id) : ""} />
         </Box>
       </Box>

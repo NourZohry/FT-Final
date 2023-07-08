@@ -7,9 +7,6 @@ import { fetchCards, setSelected } from "../../slices/cardsSlice";
 import { setData, setModal } from "../../slices/customModalSlice";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
-import { CardModal } from "../CardModal/CardModal";
-
-
 
 export const ListCard = ({ list }) => {
   const dispatch = useDispatch();
@@ -23,7 +20,6 @@ export const ListCard = ({ list }) => {
   // const isLoading = useSelector((state) => state.cards.isLoading)
   // const error = useSelector((state) => state.cards.error)
 
-
   // console.log(cards);
 
   // const [open, setOpen] = React.useState(false);
@@ -33,24 +29,38 @@ export const ListCard = ({ list }) => {
   // const [selectedCard, setSelectedCard] = useState();
   return (
     <>
-    <Box sx={{width: "200px"}}>
-      {cards &&
-        Object.keys(cards).map((key, i) => {
-          return (
-            <Box key={i}>
-              {cards[key].filter(card => card.idList === list.id).length > 0 && cards[key].map((card, j) => {
-                // return <Typography>{card.idList === list.id && card.name}</Typography>;
-                return (
-                  <Box key={j} /*onClick={() => {dispatch(setData(card)); dispatch(setModal("EditTask"))}}*/
-                  sx={{backgroundColor:"background.default", width: "200px", borderRadius: "8px", boxShadow: "0px 4px 6px 0px rgba(54, 78, 126, 0.10)"}} p={2} mb={2}>
-                    <Typography fontWeight={"700"} fontSize={"14px"}>{card.idList === list.id && card.name}</Typography>
-                  </Box>
-                );
-              })}
-            </Box>
-          );
-        })}
-    </Box>
+      <Box sx={{ width: "200px" }}>
+        {cards &&
+          Object.keys(cards).map((key, i) => {
+            return (
+              <Box key={i}>
+                {cards[key].filter((card) => card.idList === list.id).length > 0 &&
+                  cards[key].map((card, j) => {
+                    // return <Typography>{card.idList === list.id && card.name}</Typography>;
+                    return (
+                      <Box
+                        key={j}
+                        onClick={() => {
+                          dispatch(setData(card));
+                          dispatch(setModal("ShowTask"));
+                        }}
+                        sx={{ backgroundColor: "background.default", width: "200px", borderRadius: "8px", boxShadow: "0px 4px 6px 0px rgba(54, 78, 126, 0.10)" }}
+                        p={2}
+                        mb={2}
+                      >
+                        <Typography
+                          fontWeight={"700"}
+                          fontSize={"14px"}
+                        >
+                          {card.idList === list.id && card.name}
+                        </Typography>
+                      </Box>
+                    );
+                  })}
+              </Box>
+            );
+          })}
+      </Box>
     </>
   );
 };

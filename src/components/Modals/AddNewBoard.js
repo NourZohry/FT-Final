@@ -2,11 +2,10 @@ import React from "react";
 import { TextField, FormControl, InputLabel, MenuItem, Select, Container, Modal, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Button, Typography, Box, Drawer, Switch } from "@mui/material";
 import { useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setOpen, setClosed, getIsOpen } from "../../slices/customModalSlice";
 
-
-import { addNewBoard, fetchBoards } from "../../slices/boardsSlice";
+import { addNewBoard, fetchBoards, addListToBoard } from "../../slices/boardsSlice";
 
 export const AddNewBoard = () => {
   const dispatch = useDispatch();
@@ -30,10 +29,16 @@ export const AddNewBoard = () => {
     setColumnText(copy);
   };
 
+  const boards = useSelector((state) => state.boards.contents);
   const addBoard = () => {
     dispatch(setClosed());
-    dispatch(addNewBoard(newBoardName))
-    .then(() => dispatch(fetchBoards()));
+    const response = dispatch(addNewBoard(newBoardName)).then((response) => {
+      const boardId = response.payload.id;
+      columnText.map((column) => {
+        dispatch(addListToBoard([boardId, column]));
+      });
+      dispatch(fetchBoards());
+    });
   };
 
   return (
@@ -83,7 +88,10 @@ export const AddNewBoard = () => {
                   size="small"
                   onChange={(e) => changeColumnText(i, e)}
                 />
-                <CloseIcon sx={{color: "secondary.dark"}} onClick={() => deleteColumn(i)} />
+                <CloseIcon
+                  sx={{ color: "secondary.dark" }}
+                  onClick={() => deleteColumn(i)}
+                />
               </>
             </Box>
           );

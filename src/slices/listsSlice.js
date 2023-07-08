@@ -12,6 +12,19 @@ export const fetchLists = createAsyncThunk("lists/fetchLists", async (boardId) =
   return data;
 });
 
+export const deleteList = createAsyncThunk("lists/deleteList", async (listId) => {
+
+  const jsondata = JSON.stringify({ closed:true});
+  const response = await fetch("https://api.trello.com/1/lists/" +listId+ "?key=c7402336c002e9d44024966d4591bd29&token=ATTA859fe62b508ce78f6c665b7ca8298d724597956bcedb673e4ffc1bac284faeb8F9C234F6",     {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: jsondata,
+}
+);
+  const data = await response.json();
+  return data;
+});
+
 // export const archiveList = createAsyncThunk("lists/archiveList", async (listId) => {
 //   const response = await fetch("https://api.trello.com/1/lists/"+listId+"/closed?key=c7402336c002e9d44024966d4591bd29&token=ATTA859fe62b508ce78f6c665b7ca8298d724597956bcedb673e4ffc1bac284faeb8F9C234F6");
 //   const data = await response.json();

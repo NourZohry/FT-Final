@@ -1,39 +1,43 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setClosed, getIsOpen } from "../../slices/modalSlice";
+import { setClosed, getIsOpen } from "../../slices/customModalSlice";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { TextField, FormControl, InputLabel, MenuItem, Select, Container, Modal, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Button, Typography, Box, Drawer, Switch } from "@mui/material";
 import { fetchCards } from "../../slices/cardsSlice";
-import { addCard } from "../../slices/cardsSlice";
+import { updateCard } from "../../slices/cardsSlice";
 import { fetchBoards } from "../../slices/boardsSlice";
 import { fetchLists } from "../../slices/listsSlice";
 
-export const EditTask = ({ board, lists, card }) => {
-  const dispatch=useDispatch();
+export const EditTask = ({ card }) => {
+  const dispatch = useDispatch();
 
-  const [selectedStatus, setSelectedStatus] = React.useState("");
+  console.log(card);
+
+  const board = useSelector((state) => state.boards.selectedBoard);
+  const lists = useSelector((state) => state.lists.contents);
+
+  const [selectedStatus, setSelectedStatus] = React.useState(card.idList);
   const handleStatusChange = (e) => {
     console.log(e.target.value);
     setSelectedStatus(e.target.value);
   };
 
-  const [name, setName] = React.useState("");
+  const [name, setName] = React.useState(card.name);
   const handleNameChange = (e) => {
     console.log(e.target.value);
     setName(e.target.value);
   };
 
-  const [description, setDescription] = React.useState("");
+  const [description, setDescription] = React.useState(card.desc);
   const handleDescriptionChange = (e) => {
     console.log(e.target.value);
     setDescription(e.target.value);
   };
 
   const handleUpdate = () => {
-    dispatch(setClosed())
-    dispatch(addCard({status: selectedStatus, name:name, desc: description}))
-    .then(dispatch(fetchLists(board.id)))
-  }
+    dispatch(setClosed());
+    dispatch(updateCard({ status: selectedStatus, name: name, desc: description, cardId: card.id })).then(dispatch(fetchBoards()));
+  };
 
   return (
     <>
@@ -60,6 +64,7 @@ export const EditTask = ({ board, lists, card }) => {
         placeholder="e.g. Take a coffee break"
         size={"small"}
         onChange={handleNameChange}
+        defaultValue={card.name}
       />
 
       <Typography
@@ -81,6 +86,7 @@ export const EditTask = ({ board, lists, card }) => {
         onChange={handleDescriptionChange}
         multiline
         rows={4}
+        defaultValue={card.desc}
       />
 
       <Typography
@@ -103,7 +109,14 @@ export const EditTask = ({ board, lists, card }) => {
           // onChange={handleChange}
         >
           {lists.map((list, i) => {
-            return <MenuItem key={i} value={list.id}>{list.name}</MenuItem>;
+            return (
+              <MenuItem
+                key={i}
+                value={list.id}
+              >
+                {list.name}
+              </MenuItem>
+            );
           })}
         </Select>
       )}

@@ -5,7 +5,6 @@ import { useState } from "react";
 import { ListCard } from "../ListCard/ListCard";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchLists, getLists } from "../../slices/listsSlice";
-import { CardModal } from "../CardModal/CardModal";
 import { setOpen, getIsOpen } from "../../slices/boardModalSlice";
 import { setData, setModal } from "../../slices/customModalSlice";
 import { fetchBoards, getBoards, setSelectedBoard } from "../../slices/boardsSlice";
@@ -178,7 +177,6 @@ export const PageContent = ({board}) => {
         )}
       </Box>
 
-      {/* <CardModal /> */}
     </>
   );
 };

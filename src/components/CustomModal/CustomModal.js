@@ -7,6 +7,8 @@ import { DeleteBoard } from "../Modals/DeleteBoard";
 import { EditBoard } from "../Modals/EditBoard";
 import { AddTask } from "../Modals/AddTask";
 import { EditTask } from "../Modals/EditTask";
+import { ShowTask } from "../Modals/ShowTask";
+import { DeleteTask } from "../Modals/DeleteTask";
 
 const modalStyle = {
   position: "absolute",
@@ -34,7 +36,7 @@ export const CustomModal = () => {
   }, [content]);
 
   const renderSwitch = (key) => {
-    console.log(data);
+    // console.log(data);
     switch (key) {
       case "AddNewBoard":
         return <AddNewBoard />;
@@ -55,13 +57,13 @@ export const CustomModal = () => {
           />
         );
       case "EditTask":
-        return (
-          <EditTask
-            board={data[0]}
-            lists={data[1]}
-            card={data[2]}
-          />
-        );
+        return <EditTask card={data} />;
+      case "ShowTask":
+        return <ShowTask card={data} />;
+      case "EditTask":
+        return <EditTask card={data} />;
+      case "DeleteTask":
+        return <DeleteTask card={data} />;
 
       default:
         break;
