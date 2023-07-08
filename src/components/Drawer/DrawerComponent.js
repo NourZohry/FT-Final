@@ -17,168 +17,33 @@ import { PageContent } from "../PageContent/PageContent";
 
 import { useSelector, useDispatch } from "react-redux";
 import { toggleTheme } from "../../slices/themeSlice";
+import { CustomModal } from "../CustomModal/CustomModal";
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
+import { setModal } from "../../slices/customModalSlice";
+
+import { fetchBoards, getBoards, setSelectedBoard } from "../../slices/boardsSlice";
+
 
 export const DrawerComponent = () => {
   const dispatch = useDispatch();
-  const darkMode = useSelector((state) => state.theme.darkMode);
 
   const theme = useTheme();
 
-  const [selectedBoard, setSelectedBoard] = useState(0);
   const [isDrawerOpen, setIsDrawerOpen] = useState(true);
 
-  const [boardName, setBoardName] = useState("");
+  // const [selectedBoard, setSelectedBoard] = useState();
+  const selectedBoard = useSelector((state) => state.boards.selectedBoard);
 
-  // const [testBoards, setTestBoards] = useState<any[]>([])
-  const [testBoards, setTestBoards] = useState([]);
 
-  const fetchBoards = () => {
-    fetch("https://api.trello.com/1/members/me/boards?key=c7402336c002e9d44024966d4591bd29&token=ATTA859fe62b508ce78f6c665b7ca8298d724597956bcedb673e4ffc1bac284faeb8F9C234F6")
-      .then((res) => res.json())
-      .then((data) => setTestBoards(data));
-  }
+  const boards = useSelector((state) => state.boards.contents);
 
   React.useEffect(() => {
-    fetchBoards()
+    dispatch(fetchBoards());
   }, []);
-
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const [newBoardColumns, setNewBoardColumns] = useState([]);
-  const [newBoardColumnsCounter, setNewBoardColumnsCounter] = useState(0);
-
-  const addColumn = () => {
-    setNewBoardColumns([...newBoardColumns, { id: newBoardColumnsCounter, text: "", hide: false }]);
-    setNewBoardColumnsCounter(newBoardColumnsCounter + 1);
-  };
-
-  const handleColumnChange = (column, e) => {
-    // console.log(column);
-    let copy = [...newBoardColumns];
-    Object.keys(copy).filter((key) => {});
-    // copy[column.id].text = e.target.value;
-    // console.log(e.target.value);
-    // console.log(copy);
-    setNewBoardColumns(copy);
-  };
-
-  const deleteColumn = (column) => {
-    // setNewBoardColumns(newBoardColumns.filter(col => col.id !== column.id))
-    let copy = [...newBoardColumns];
-    console.log(copy);
-    copy[column.id].hide = true;
-    setNewBoardColumns(copy);
-  };
-
-  const addBoard = () => {
-    fetch("https://api.trello.com/1/boards/?name=" + boardName + "&key=c7402336c002e9d44024966d4591bd29&token=ATTA859fe62b508ce78f6c665b7ca8298d724597956bcedb673e4ffc1bac284faeb8F9C234F6", {
-      method: "POST",
-    })
-    .then(() => fetchBoards())
-    // .then(() => addListsToBoard())
-      // .then((response) => {
-      //   console.log(`Response: ${response.status} ${response.statusText}`);
-      //   return response.text();
-      // })
-      // .then((text) => console.log(text))
-      // .catch((err) => console.error(err));
-  };
 
   return (
     <>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <Typography
-            id="modal-modal-title"
-            variant="h6"
-            component="h2"
-          >
-            Add New Board
-          </Typography>
-          <Typography
-            id="modal-modal-description"
-            sx={{ mt: 2 }}
-            color={"secondary.dark"}
-            fontSize={"12px"}
-            fontWeight={"700"}
-          >
-            Name
-          </Typography>
-          <TextField
-            fullWidth
-            id="outlined-basic"
-            placeholder="e.g. Web Design"
-            variant="outlined"
-            onChange={(e) => setBoardName(e.target.value)}
-          />
-          <Typography
-            id="modal-modal-description"
-            sx={{ mt: 2, mb: 1 }}
-            color={"secondary.dark"}
-            fontSize={"12px"}
-            fontWeight={"700"}
-          >
-            Columns
-          </Typography>
-          <Box sx={{ display: "flex", flexDirection: "column" }}>
-            {newBoardColumns &&
-              newBoardColumns.map((column, i) => {
-                return (
-                  <>
-                    {column.hide === false && (
-                      <Box
-                        key={i}
-                        sx={{ display: "flex", alignItems: "center" }}
-                      >
-                        {console.log(column)}
-                        {console.log(i)}
-                        <TextField
-                          fullWidth
-                          onChange={(e) => handleColumnChange(column, e)}
-                        />
-                        <CloseIcon onClick={() => deleteColumn(column, i)} />
-                      </Box>
-                    )}
-                  </>
-                );
-              })}
-            <Button
-              variant="contained"
-              id="basic-button"
-              fullWidth
-              onClick={() => addColumn()}
-            >
-              + Add New Column
-            </Button>
-            <Button
-              variant="contained"
-              id="basic-button"
-              fullWidth
-              onClick={() => addBoard()}
-            >
-              Save Changes
-            </Button>
-          </Box>
-        </Box>
-      </Modal>
+      <CustomModal />
 
       <Box sx={{ display: "flex" }}>
         <Drawer
@@ -195,10 +60,7 @@ export const DrawerComponent = () => {
           variant="persistent"
         >
           <Box
-            // p={1}
             pt={3}
-            // pl={3}
-            // width="200px"
             textAlign="left"
             sx={{ display: "flex", flexDirection: "column", minHeight: "100vh", justifyContent: "space-between" }}
           >
@@ -206,10 +68,6 @@ export const DrawerComponent = () => {
               {/* Drawer Content Here */}
               <Box
                 component="img"
-                // sx={{
-                //   height: 100,
-                //   width: 100,
-                // }}
                 alt="Kanban"
                 src={theme.palette.mode === "light" ? KanbanLight : KanbanDark}
                 ml={3}
@@ -223,13 +81,12 @@ export const DrawerComponent = () => {
                   fontSize="12px"
                   letterSpacing={"1px"}
                 >
-                  ALL BOARDS ({testBoards.length})
+                  ALL BOARDS ({boards.length})
                 </Typography>
                 <List sx={{ pt: 0, mr: 1.2 }}>
-                  {/* {console.log(testBoards)} */}
-                  {testBoards &&
-                    testBoards.length !== 0 &&
-                    testBoards.map((testBoard, i) => {
+                  {boards &&
+                    boards.length !== 0 &&
+                    boards.map((testBoard, i) => {
                       return (
                         <ListItem
                           disablePadding
@@ -237,11 +94,11 @@ export const DrawerComponent = () => {
                         >
                           <ListItemButton
                             disableRipple
-                            onClick={() => setSelectedBoard(testBoard)}
-                            selected={selectedBoard.id === testBoard.id ? true : false}
+                            // onClick={() => setSelectedBoard(testBoard)}
+                            onClick={() => dispatch(setSelectedBoard(testBoard))}
+                            selected={selectedBoard && selectedBoard.id === testBoard.id ? true : false}
                             sx={{ pt: 0.6, pb: 0.6, mb: 0 }}
                           >
-                            {/* <ListItemIcon> */}
                             <Box
                               component="img"
                               alt="Kanban"
@@ -249,8 +106,6 @@ export const DrawerComponent = () => {
                               mr={1}
                               pl={1}
                             />
-                            {/* <img src={BoardIcon} alt="" /> */}
-                            {/* </ListItemIcon> */}
                             <ListItemText primary={testBoard.name} />
                           </ListItemButton>
                         </ListItem>
@@ -261,7 +116,6 @@ export const DrawerComponent = () => {
                       disableRipple
                       sx={{ pt: 0.6, pb: 0.6, mb: 0 }}
                     >
-                      {/* <ListItemIcon> */}
                       <Box
                         component="img"
                         alt="Kanban"
@@ -269,10 +123,8 @@ export const DrawerComponent = () => {
                         mr={1}
                         pl={1}
                       />
-                      {/* <img src={BoardIcon} alt="" /> */}
-                      {/* </ListItemIcon> */}
                       <ListItemText
-                        onClick={handleOpen}
+                        onClick={() => dispatch(setModal("AddNewBoard"))}
                         primary="+ Create New Board"
                       />
                     </ListItemButton>
@@ -302,7 +154,8 @@ export const DrawerComponent = () => {
 
         <Box sx={{ flexGrow: 1, marginLeft: isDrawerOpen ? 0 : "-260px" }}>
           {/* Page Content Here */}
-          <PageContent board={selectedBoard} />
+          {console.log(boards.filter(boardItem => boardItem === selectedBoard))}
+          <PageContent board={boards && selectedBoard ? boards.find(boardItem => boardItem.id === selectedBoard.id) : ""} />
         </Box>
       </Box>
 

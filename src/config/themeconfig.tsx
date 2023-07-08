@@ -10,6 +10,10 @@ export enum commonPalette {
   MEDIUMGREY = "#828FA3",
   PURPLE = "#635FC7",
   LIGHTPURPLE = "#A8A4FF",
+  RED = "#EA5555",
+  LIGHTRED = "#FF9898",
+  BUTTON_SECONDARY_IDLE = "#efeff9",
+  BUTTON_SECONDARY_HOVER = "#d8d7f1",
 }
 
 export enum lightThemePalette {
@@ -37,6 +41,14 @@ const lightTheme = createTheme({
       light: lightThemePalette.BG3,
       main: lightThemePalette.BG2,
       dark: commonPalette.MEDIUMGREY,
+    },
+    error: {
+      main: commonPalette.RED,
+      light: commonPalette.LIGHTRED,
+    },
+    info: {
+      main: commonPalette.BUTTON_SECONDARY_IDLE,
+      dark: commonPalette.BUTTON_SECONDARY_HOVER,
     },
   },
   typography: {
@@ -68,27 +80,28 @@ const lightTheme = createTheme({
             backgroundColor: commonPalette.PURPLE + "1A",
             color: commonPalette.PURPLE,
             borderRadius: "0 50px 50px 0",
-          }
+          },
         },
       },
     },
     MuiListItemButton: {
       styleOverrides: {
         root: {
-          '&.Mui-selected': {
+          "&.Mui-selected": {
             backgroundColor: commonPalette.PURPLE,
-                        color: "#FFFFFF",
+            color: "#FFFFFF",
             borderRadius: "0 50px 50px 0",
             "&:hover": {
-              backgroundColor: commonPalette.PURPLE
+              backgroundColor: commonPalette.PURPLE,
             },
-            '&& .MuiTouchRipple-rippleVisible': { //TODO: idk if this does anything
-              animationDuration: '0ms',
-            }
-          }
-        }
-      }
-    }
+            "&& .MuiTouchRipple-rippleVisible": {
+              //TODO: idk if this does anything
+              animationDuration: "0ms",
+            },
+          },
+        },
+      },
+    },
   },
 });
 
@@ -135,32 +148,32 @@ const darkTheme = createTheme({
             backgroundColor: commonPalette.PURPLE + "1A",
             color: commonPalette.PURPLE,
             borderRadius: "0 50px 50px 0",
-          }
+          },
         },
       },
     },
     MuiListItemButton: {
       styleOverrides: {
         root: {
-          '&.Mui-selected': {
+          "&.Mui-selected": {
             backgroundColor: commonPalette.PURPLE,
-                        color: "#FFFFFF",
+            color: "#FFFFFF",
             borderRadius: "0 50px 50px 0",
             "&:hover": {
-              backgroundColor: commonPalette.PURPLE
+              backgroundColor: commonPalette.PURPLE,
             },
-            '&& .MuiTouchRipple-rippleVisible': { //TODO: idk if this does anything
-              animationDuration: '0ms',
-            }
-
-          }
-        }
-      }
-    }
+            "&& .MuiTouchRipple-rippleVisible": {
+              //TODO: idk if this does anything
+              animationDuration: "0ms",
+            },
+          },
+        },
+      },
+    },
   },
 });
 
-export {lightTheme, darkTheme};
+export { lightTheme, darkTheme };
 
 // export const ThemeConfig: React.FC<ThemeProp> = ({ children }) => {
 //   return (

@@ -6,8 +6,11 @@ import { ListCard } from "../ListCard/ListCard";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchLists, getLists } from "../../slices/listsSlice";
 import { CardModal } from "../CardModal/CardModal";
-import { BoardModal } from "../BoardModal/BoardModal";
 import { setOpen, getIsOpen } from "../../slices/boardModalSlice";
+import { setData, setModal } from "../../slices/customModalSlice";
+import { fetchBoards, getBoards, setSelectedBoard } from "../../slices/boardsSlice";
+
+
 
 
 // type BoardType = {
@@ -27,11 +30,13 @@ function calculateCardCountForList(cards, listId) {
   });
 }
 
-export const PageContent = ({ board } /*: BoardType*/) => {
+export const PageContent = ({board}) => {
   const dispatch = useDispatch();
 
+  // const board = useSelector((state) => state.boards.selectedBoard);
+
   React.useEffect(() => {
-    if (board.id) dispatch(fetchLists(board.id));
+    if (board && board.id) dispatch(fetchLists(board.id));
     // setShowBoardModal(false);
   }, [dispatch, board]);
 
@@ -62,8 +67,9 @@ export const PageContent = ({ board } /*: BoardType*/) => {
 
   return (
     <>
-      {/* {<AddNewTaskModal />} */}
-      {<BoardModal board={board} lists={contents} page={true} />}
+          {/* <Button onClick={() => dispatch(setModal("AddNewBoard"))}>test 1 button</Button>
+    <Button onClick={() => dispatch(setModal("DeleteBoard"))}>test 2 button</Button> */}
+
 
       <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
         <Box
@@ -75,13 +81,15 @@ export const PageContent = ({ board } /*: BoardType*/) => {
               fontWeight="700"
               fontSize="20px"
             >
-              {board.name}
+              {board && board.name}
             </Typography>
           </Box>
 
           <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <Button variant="contained"
-                    onClick={() => setShowModal(true)}
+                    // onClick={() => setShowModal(true)}
+                    disabled = {board && isLoading === false && contents.length === 0 ? true : false}
+                    onClick={() => {dispatch(setData([board, contents])); dispatch(setModal("AddTask"))}}
                     >+ Add New Task</Button>
             <Menu
               id="basic-menu"
@@ -92,8 +100,8 @@ export const PageContent = ({ board } /*: BoardType*/) => {
                 "aria-labelledby": "basic-button",
               }}
             >
-              <MenuItem onClick={() => {handleCloseMenu(); dispatch(setOpen())}}>Edit Board</MenuItem>
-              <MenuItem onClick={() => {handleCloseMenu(); dispatch(setOpen())}}>Delete Board</MenuItem>
+              <MenuItem onClick={() => {handleCloseMenu(); dispatch(setData([board,contents])); dispatch(setModal("EditBoard"))}}>Edit Board</MenuItem>
+              <MenuItem onClick={() => {handleCloseMenu(); dispatch(setData(board)); dispatch(setModal("DeleteBoard"))}}>Delete Board</MenuItem>
             </Menu>
             <MoreVertIcon onClick={handleClick} sx={{ color: "secondary.dark" }} />
           </Box>
@@ -110,7 +118,7 @@ export const PageContent = ({ board } /*: BoardType*/) => {
           </Box>
         )}
 
-        {isLoading === false && contents.length === 0 && (
+        {board && isLoading === false && contents.length === 0 && (
           <Box sx={{ flexGrow: 1, backgroundColor: "secondary.main", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "20px" }}>
             <Typography
               sx={{ color: "secondary.dark" }}
@@ -118,7 +126,7 @@ export const PageContent = ({ board } /*: BoardType*/) => {
             >
               This board is empty. Create a new column to get started.
             </Typography>
-            <Button variant="contained">+ Add New Column</Button>
+            <Button variant="contained" onClick={() => {dispatch(setData([board,contents])); dispatch(setModal("EditBoard"))}}>+ Add New Column</Button>
           </Box>
         )}
 
@@ -156,6 +164,8 @@ export const PageContent = ({ board } /*: BoardType*/) => {
               mb={4}
               mr={2}
               sx={{ borderRadius: "6px", width: "200px", maxWidth: "200px", flexGrow: 1, backgroundColor: "lightgreen", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}
+              onClick={() => {dispatch(setData([board,contents])); dispatch(setModal("EditBoard"))}}
+
             >
               <Typography
                 sx={{ color: "secondary.dark" }}
@@ -168,7 +178,7 @@ export const PageContent = ({ board } /*: BoardType*/) => {
         )}
       </Box>
 
-      <CardModal />
+      {/* <CardModal /> */}
     </>
   );
 };

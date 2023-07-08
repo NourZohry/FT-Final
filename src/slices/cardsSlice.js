@@ -13,6 +13,23 @@ export const fetchCards = createAsyncThunk("cards/fetchCards", async (listId) =>
   return [data, listId];
 });
 
+export const addCard = createAsyncThunk("cards/addCard", async (dataObj) => {
+  const response = await fetch(
+    "https://api.trello.com/1/cards?" +
+      new URLSearchParams({
+        idList: dataObj.status,
+        name: dataObj.name,
+        desc: dataObj.desc,
+      }) +
+      "&key=c7402336c002e9d44024966d4591bd29&token=ATTA859fe62b508ce78f6c665b7ca8298d724597956bcedb673e4ffc1bac284faeb8F9C234F6",
+    {
+      method: "POST",
+    }
+  );
+  const data = await response.json();
+  return data;
+});
+
 export const cardsSlice = createSlice({
   name: "cards",
   initialState,
