@@ -62,7 +62,7 @@ export const PageContent = ({ board } /*: BoardType*/) => {
 
   return (
     <>
-      {<AddNewTaskModal />}
+      {/* {<AddNewTaskModal />} */}
       {<BoardModal board={board} lists={contents} page={true} />}
 
       <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
