@@ -1,12 +1,10 @@
-import React from "react";
-import { useTheme, TextField, FormControl, InputLabel, MenuItem, Select, Container, Modal, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Button, Typography, Box, Drawer, Switch } from "@mui/material";
-import { useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
+import { Box, Button, TextField, Typography, useTheme } from "@mui/material";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setOpen, setClosed, getIsOpen } from "../../slices/customModalSlice";
-import { archiveList, addList } from "../../slices/listsSlice";
+import { setClosed } from "../../slices/customModalSlice";
 
-import { addListToBoard, editBoard, fetchBoards, changeBoardColumns } from "../../slices/boardsSlice";
+import { addListToBoard, editBoard, fetchBoards } from "../../slices/boardsSlice";
 import { deleteList } from "../../slices/listsSlice";
 
 export const EditBoard = ({ board, lists }) => {
@@ -32,16 +30,6 @@ export const EditBoard = ({ board, lists }) => {
     let copy = [...columnText];
     copy[column] = e.target.value;
     setColumnText(copy);
-  };
-
-  const handleChangeColumns = () => {
-    // console.log(lists);
-    // for (let i = 0; i < columnText[i].length; i++) {
-    //   if (lists[i].name !== columnText[i]) {
-    //     dispatch(archiveList(lists[i].id));
-    //     // dispatch(addList([columnText[i],board.id]))
-    //   }
-    // }
   };
 
   const handleEditBoard = () => {

@@ -1,11 +1,10 @@
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { Box, Menu, MenuItem, Select, Typography } from "@mui/material";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Menu, TextField, FormControl, InputLabel, MenuItem, Select, Container, Modal, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Button, Typography, Box, Drawer, Switch } from "@mui/material";
-import { editCardList, fetchCards } from "../../slices/cardsSlice";
-import { setClosed, getIsOpen, setModal, setData } from "../../slices/customModalSlice";
-import { fetchLists } from "../../slices/listsSlice";
 import { fetchBoards } from "../../slices/boardsSlice";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { editCardList } from "../../slices/cardsSlice";
+import { setClosed, setModal } from "../../slices/customModalSlice";
 
 export const ShowTask = ({ card }) => {
   const dispatch = useDispatch();
@@ -17,7 +16,7 @@ export const ShowTask = ({ card }) => {
   };
 
   React.useEffect(() => {
-    if (selectedStatus != "") handleUpdate();
+    if (selectedStatus !== "") {handleUpdate()};
   }, [selectedStatus]);
 
   const handleUpdate = () => {

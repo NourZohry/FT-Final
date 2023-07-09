@@ -1,11 +1,8 @@
+import { Box, Typography } from "@mui/material";
 import React from "react";
-import { InputLabel, MenuItem, Select, Container, Modal, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Button, Typography, Box, Drawer, Switch } from "@mui/material";
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getIsOpen, setOpen } from "../../slices/modalSlice";
-import { fetchCards, setSelected } from "../../slices/cardsSlice";
+import { fetchCards } from "../../slices/cardsSlice";
 import { setData, setModal } from "../../slices/customModalSlice";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 
 export const ListCard = ({ list }) => {
@@ -16,7 +13,7 @@ export const ListCard = ({ list }) => {
   }, [dispatch, list]);
 
   const cards = useSelector((state) => state.cards.contents);
-  const selected = useSelector((state) => state.cards.selected);
+  // const selected = useSelector((state) => state.cards.selected);
   // const isLoading = useSelector((state) => state.cards.isLoading)
   // const error = useSelector((state) => state.cards.error)
 

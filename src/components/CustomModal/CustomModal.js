@@ -1,5 +1,5 @@
 import React from "react";
-import { TextField, FormControl, InputLabel, MenuItem, Select, Container, Modal, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Button, Typography, Box, Drawer, Switch } from "@mui/material";
+import { Modal, Box } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { setOpen, setClosed, getIsOpen } from "../../slices/customModalSlice";
 import { AddNewBoard } from "../Modals/AddNewBoard";

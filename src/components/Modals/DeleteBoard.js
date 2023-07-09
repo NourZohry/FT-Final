@@ -1,8 +1,6 @@
-import React from "react";
-import { TextField, FormControl, InputLabel, MenuItem, Select, Container, Modal, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Button, Typography, Box, Drawer, Switch } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Box, Button, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
-import { setOpen, setClosed, getIsOpen } from "../../slices/customModalSlice";
+import { setClosed } from "../../slices/customModalSlice";
 
 import { deleteBoard, fetchBoards } from "../../slices/boardsSlice";
 

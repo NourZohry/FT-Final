@@ -1,11 +1,10 @@
-import React from "react";
-import { useTheme, TextField, FormControl, InputLabel, MenuItem, Select, Container, Modal, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Button, Typography, Box, Drawer, Switch } from "@mui/material";
-import { useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
+import { Box, Button, TextField, Typography, useTheme } from "@mui/material";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setOpen, setClosed, getIsOpen } from "../../slices/customModalSlice";
+import { setClosed } from "../../slices/customModalSlice";
 
-import { addNewBoard, fetchBoards, addListToBoard } from "../../slices/boardsSlice";
+import { addListToBoard, addNewBoard, fetchBoards } from "../../slices/boardsSlice";
 
 export const AddNewBoard = () => {
   const dispatch = useDispatch();
@@ -31,7 +30,7 @@ export const AddNewBoard = () => {
     setColumnText(copy);
   };
 
-  const boards = useSelector((state) => state.boards.contents);
+  // const boards = useSelector((state) => state.boards.contents);
   const addBoard = () => {
     dispatch(setClosed());
     const response = dispatch(addNewBoard(newBoardName)).then((response) => {

@@ -1,27 +1,24 @@
-import { TextField, useTheme, Fab, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography, Box, Drawer, Switch } from "@mui/material";
+import { Box, Drawer, Fab, List, ListItem, ListItemButton, ListItemText, Switch, Typography, useTheme } from "@mui/material";
 import React, { useState } from "react";
 // import KanbanLogo from "../../assets/kanban-logo.svg";
-import KanbanLight from "../../assets/kanban-lightmode.svg";
 import KanbanDark from "../../assets/kanban-darkmode.svg";
-import Modal from "@mui/material/Modal";
-import Button from "@mui/material/Button";
-import CloseIcon from "@mui/icons-material/Close";
+import KanbanLight from "../../assets/kanban-lightmode.svg";
 
-import BoardIcon from "../../assets/board-icon.svg";
-import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import LightModeIcon from "@mui/icons-material/LightMode";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import BoardIcon from "../../assets/board-icon.svg";
 
 import { PageContent } from "../PageContent/PageContent";
 
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toggleTheme } from "../../slices/themeSlice";
 import { CustomModal } from "../CustomModal/CustomModal";
 
 import { setModal } from "../../slices/customModalSlice";
 
-import { fetchBoards, getBoards, setSelectedBoard } from "../../slices/boardsSlice";
+import { fetchBoards, setSelectedBoard } from "../../slices/boardsSlice";
 
 
 export const DrawerComponent = () => {

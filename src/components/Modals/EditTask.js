@@ -1,12 +1,9 @@
+import { Box, Button, MenuItem, Select, TextField, Typography } from "@mui/material";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setClosed, getIsOpen } from "../../slices/customModalSlice";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { TextField, FormControl, InputLabel, MenuItem, Select, Container, Modal, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Button, Typography, Box, Drawer, Switch } from "@mui/material";
-import { fetchCards } from "../../slices/cardsSlice";
-import { updateCard } from "../../slices/cardsSlice";
 import { fetchBoards } from "../../slices/boardsSlice";
-import { fetchLists } from "../../slices/listsSlice";
+import { updateCard } from "../../slices/cardsSlice";
+import { setClosed } from "../../slices/customModalSlice";
 
 export const EditTask = ({ card }) => {
   const dispatch = useDispatch();
