@@ -44,7 +44,7 @@ export const ListCard = ({ list }) => {
                           dispatch(setData(card));
                           dispatch(setModal("ShowTask"));
                         }}
-                        sx={{ backgroundColor: "background.default", width: "200px", borderRadius: "8px", boxShadow: "0px 4px 6px 0px rgba(54, 78, 126, 0.10)" }}
+                        sx={{ backgroundColor: "info.light", width: "200px", borderRadius: "8px", boxShadow: "0px 4px 6px 0px rgba(54, 78, 126, 0.10)" }}
                         p={2}
                         mb={2}
                       >

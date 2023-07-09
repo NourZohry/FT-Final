@@ -1,5 +1,5 @@
 import React from "react";
-import { MenuItem, Menu, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Button, Typography, Box, Drawer, Switch } from "@mui/material";
+import { Divider, useTheme, MenuItem, Menu, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Button, Typography, Box, Drawer, Switch } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { useState } from "react";
 import { ListCard } from "../ListCard/ListCard";
@@ -9,7 +9,8 @@ import { setOpen, getIsOpen } from "../../slices/boardModalSlice";
 import { setData, setModal } from "../../slices/customModalSlice";
 import { fetchBoards, getBoards, setSelectedBoard } from "../../slices/boardsSlice";
 
-
+import KanbanLight from "../../assets/kanban-lightmode.svg";
+import KanbanDark from "../../assets/kanban-darkmode.svg";
 
 
 // type BoardType = {
@@ -29,7 +30,7 @@ function calculateCardCountForList(cards, listId) {
   });
 }
 
-export const PageContent = ({board}) => {
+export const PageContent = ({isDrawerOpen, board}) => {
   const dispatch = useDispatch();
 
   // const board = useSelector((state) => state.boards.selectedBoard);
@@ -62,7 +63,9 @@ export const PageContent = ({board}) => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const [showModal, setShowModal] = useState(false);
+
+  const theme = useTheme();
+  
 
   return (
     <>
@@ -72,10 +75,19 @@ export const PageContent = ({board}) => {
 
       <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
         <Box
-          sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", border: "1px solid #E4EBFA", backgroundColor: "background.default" }}
+          sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", border: (theme.palette.mode === "light" ? "1px solid #E4EBFA" : "1px solid #3E3F4E"), backgroundColor: "info.light" }}
           p={2}
         >
-          <Box>
+          <Box sx={{display: "flex", gap: "20px", alignItems: "center"}}>
+            {isDrawerOpen === false &&              <> <Box
+                component="img"
+                alt="Kanban"
+                src={theme.palette.mode === "light" ? KanbanLight : KanbanDark}
+                // ml={3}
+                height={"22px"}
+              />
+              <Divider orientation="vertical" flexItem/>
+              </>}
             <Typography
               fontWeight="700"
               fontSize="20px"
@@ -99,10 +111,10 @@ export const PageContent = ({board}) => {
                 "aria-labelledby": "basic-button",
               }}
             >
-              <MenuItem onClick={() => {handleCloseMenu(); dispatch(setData([board,contents])); dispatch(setModal("EditBoard"))}}>Edit Board</MenuItem>
-              <MenuItem onClick={() => {handleCloseMenu(); dispatch(setData(board)); dispatch(setModal("DeleteBoard"))}}>Delete Board</MenuItem>
+              <MenuItem onClick={() => {handleCloseMenu(); dispatch(setData([board,contents])); dispatch(setModal("EditBoard"))}} sx={{color: "secondary.dark", fontSize: "13px"}}>Edit Board</MenuItem>
+              <MenuItem onClick={() => {handleCloseMenu(); dispatch(setData(board)); dispatch(setModal("DeleteBoard"))}} sx={{color: "error.main", fontSize: "13px"}}>Delete Board</MenuItem>
             </Menu>
-            <MoreVertIcon onClick={handleClick} sx={{ color: "secondary.dark" }} />
+            <MoreVertIcon onClick={handleClick} sx={{ color: "secondary.dark", "&:hover": {cursor: "pointer"} }} />
           </Box>
         </Box>
 
@@ -140,7 +152,7 @@ export const PageContent = ({board}) => {
                   key={i}
                 >
                   <Box sx={{ display: "flex", alignItems: "start", justifyContent: "start", gap: "5px" }}>
-                    <Box sx={{ width: "10px", height: "10px", backgroundColor: "red", borderRadius: "50%", flexShrink: 0, marginTop: "5px" }}></Box>
+                    <Box sx={{ width: "10px", height: "10px", backgroundColor: "info.light", borderRadius: "50%", flexShrink: 0, marginTop: "5px" }}></Box>
 
                     <Typography
                       sx={{ textTransform: "uppercase", color: "secondary.dark" }}
@@ -160,14 +172,14 @@ export const PageContent = ({board}) => {
             })}
             <Box
               mt={4.5}
-              mb={4}
+              mb={3}
               mr={2}
-              sx={{ borderRadius: "6px", width: "200px", maxWidth: "200px", flexGrow: 1, backgroundColor: "lightgreen", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}
+              sx={{ borderRadius: "6px", width: "200px", maxWidth: "200px", flexGrow: 1, backgroundColor: "primary.light", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", color: "secondary.dark", "&:hover": {cursor: "pointer", color: "primary.main"} }}
               onClick={() => {dispatch(setData([board,contents])); dispatch(setModal("EditBoard"))}}
 
             >
               <Typography
-                sx={{ color: "secondary.dark" }}
+                // sx={{ }}
                 fontWeight="600"
               >
                 + New Column

@@ -58,6 +58,7 @@ export const ShowTask = ({ card }) => {
               handleCloseMenu();
               dispatch(setModal("EditTask"));
             }}
+            sx={{color: "secondary.dark", fontSize: "13px"}}
           >
             Edit Task
           </MenuItem>
@@ -66,6 +67,7 @@ export const ShowTask = ({ card }) => {
               handleCloseMenu();
               dispatch(setModal("DeleteTask"));
             }}
+            sx={{color: "error.main", fontSize: "13px"}}
           >
             Delete Task
           </MenuItem>
@@ -73,7 +75,7 @@ export const ShowTask = ({ card }) => {
 
         <MoreVertIcon
           onClick={handleClick}
-          sx={{ color: "secondary.dark" }}
+          sx={{ color: "secondary.dark","&:hover": {cursor: "pointer"} }}
         />
       </Box>
       <Typography

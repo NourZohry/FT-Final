@@ -50,7 +50,7 @@ export const EditTask = ({ card }) => {
       <Typography
         id="modal-modal-description"
         sx={{ mt: 2 }}
-        color={"secondary.dark"}
+        color={"primary.dark"}
         fontSize={"12px"}
         fontWeight={"700"}
       >
@@ -70,7 +70,7 @@ export const EditTask = ({ card }) => {
       <Typography
         id="modal-modal-description"
         sx={{ mt: 2 }}
-        color={"secondary.dark"}
+        color={"primary.dark"}
         fontSize={"12px"}
         fontWeight={"700"}
       >
@@ -92,7 +92,7 @@ export const EditTask = ({ card }) => {
       <Typography
         id="modal-modal-description"
         sx={{ mt: 2 }}
-        color={"secondary.dark"}
+        color={"primary.dark"}
         fontSize={"12px"}
         fontWeight={"700"}
       >

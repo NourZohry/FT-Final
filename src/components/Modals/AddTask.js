@@ -45,7 +45,7 @@ export const AddTask = ({ board, lists }) => {
       <Typography
         id="modal-modal-description"
         sx={{ mt: 2 }}
-        color={"secondary.dark"}
+        color={"primary.dark"}
         fontSize={"12px"}
         fontWeight={"700"}
       >
@@ -64,7 +64,7 @@ export const AddTask = ({ board, lists }) => {
       <Typography
         id="modal-modal-description"
         sx={{ mt: 2 }}
-        color={"secondary.dark"}
+        color={"primary.dark"}
         fontSize={"12px"}
         fontWeight={"700"}
       >
@@ -85,7 +85,7 @@ export const AddTask = ({ board, lists }) => {
       <Typography
         id="modal-modal-description"
         sx={{ mt: 2 }}
-        color={"secondary.dark"}
+        color={"primary.dark"}
         fontSize={"12px"}
         fontWeight={"700"}
       >
@@ -143,7 +143,7 @@ export const AddTask = ({ board, lists }) => {
           fullWidth
           onClick={() => handleUpdate()}
         >
-          Add Task
+          Create Task
         </Button>
       </Box>
     </>

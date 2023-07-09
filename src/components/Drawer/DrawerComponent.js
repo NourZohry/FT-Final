@@ -62,7 +62,9 @@ export const DrawerComponent = () => {
           <Box
             pt={3}
             textAlign="left"
-            sx={{ display: "flex", flexDirection: "column", minHeight: "100vh", justifyContent: "space-between" }}
+            sx={{ display: "flex", flexDirection: "column", minHeight: "100vh", justifyContent: "space-between",
+            // backgroundColor: "red", height: "fit-content" }}
+        }}
           >
             <Box>
               {/* Drawer Content Here */}
@@ -71,6 +73,7 @@ export const DrawerComponent = () => {
                 alt="Kanban"
                 src={theme.palette.mode === "light" ? KanbanLight : KanbanDark}
                 ml={3}
+                height={"22px"}
               />
               <Box>
                 <Typography
@@ -133,10 +136,10 @@ export const DrawerComponent = () => {
               </Box>
             </Box>
             <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "15px" }}>
-              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "secondary.light", padding: "3px 45px", borderRadius: "3px", gap: "5px" }}>
+              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "secondary.main", padding: "3px 45px", borderRadius: "3px", gap: "5px" }}>
                 <LightModeIcon sx={{ color: "secondary.dark" }} />
                 <Switch
-                  defaultChecked
+                  defaultChecked = {theme.palette.mode === "dark"}
                   onClick={() => dispatch(toggleTheme())}
                 />
                 <DarkModeIcon sx={{ color: "secondary.dark" }} />
@@ -155,7 +158,7 @@ export const DrawerComponent = () => {
         <Box sx={{ flexGrow: 1, marginLeft: isDrawerOpen ? 0 : "-260px" }}>
           {/* Page Content Here */}
           {/* {console.log(boards.filter(boardItem => boardItem === selectedBoard))} */}
-          <PageContent board={boards && selectedBoard ? boards.find(boardItem => boardItem.id === selectedBoard.id) : ""} />
+          <PageContent isDrawerOpen={isDrawerOpen} board={boards && selectedBoard ? boards.find(boardItem => boardItem.id === selectedBoard.id) : ""} />
         </Box>
       </Box>
 
@@ -163,13 +166,16 @@ export const DrawerComponent = () => {
         color="primary"
         aria-label="add"
         onClick={() => setIsDrawerOpen(true)}
-        sx={{
-          position: "fixed",
-          bottom: "20px",
-          // left: "-10px",
-          borderTopLeftRadius: "0px",
-          borderBottomLeftRadius: "0px",
-        }}
+        // sx={{
+        //   position: "fixed",
+        //   bottom: "20px",
+        //   // left: "-10px",
+        //   borderTopLeftRadius: "0px",
+        //   borderBottomLeftRadius: "0px",
+        //   "&:hover": {
+        //     backgroundColor: ""
+        //   }
+        // }}
       >
         <VisibilityIcon />
       </Fab>

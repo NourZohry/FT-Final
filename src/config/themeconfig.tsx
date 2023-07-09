@@ -20,22 +20,26 @@ export enum lightThemePalette {
   BG = "#FFFFFF",
   BG2 = "#F4F7FD",
   BG3 = "#F4F7FD",
+  BG4 = "#E9EFFA",
 }
 
 export enum darkThemePalette {
   BG = "#12181b",
-  BG2 = "#2B2C37",
-  BG3 = "#20212C",
+  BG2 = "#20212C",
+  BG3 = "#2B2C37",
+  BG4 = "#2B2C37",
 }
 
 const lightTheme = createTheme({
   palette: {
     mode: "light",
     background: {
-      default: lightThemePalette.BG,
+      default: lightThemePalette.BG3,
     },
     primary: {
       main: commonPalette.PURPLE,
+      light: "#EAF0FB",
+      dark: commonPalette.MEDIUMGREY,
     },
     secondary: {
       light: lightThemePalette.BG3,
@@ -47,6 +51,7 @@ const lightTheme = createTheme({
       light: commonPalette.LIGHTRED,
     },
     info: {
+      light: lightThemePalette.BG,
       main: commonPalette.BUTTON_SECONDARY_IDLE,
       dark: commonPalette.BUTTON_SECONDARY_HOVER,
     },
@@ -55,6 +60,21 @@ const lightTheme = createTheme({
     fontFamily: commonPalette.FONT_GLOBAL,
   },
   components: {
+    MuiFab: {
+      defaultProps: {
+        sx: {
+          position: "fixed",
+          bottom: "20px",
+          // left: "-10px",
+          borderTopLeftRadius: "0px",
+          borderBottomLeftRadius: "0px",
+
+          "&:hover": {
+            backgroundColor: commonPalette.LIGHTPURPLE,
+          },
+        },
+      },
+    },
     MuiButton: {
       defaultProps: {
         sx: {
@@ -109,21 +129,47 @@ const darkTheme = createTheme({
   palette: {
     mode: "dark",
     background: {
-      default: darkThemePalette.BG,
+      default: darkThemePalette.BG3,
     },
     primary: {
       main: commonPalette.PURPLE,
+      light: "#23242F",
+      dark: "#FFFFFF"
     },
     secondary: {
       light: darkThemePalette.BG3,
       main: darkThemePalette.BG2,
       dark: commonPalette.MEDIUMGREY,
     },
+    error: {
+      main: commonPalette.RED,
+      light: commonPalette.LIGHTRED,
+    },
+    info: {
+      light: darkThemePalette.BG4,
+      main: commonPalette.BUTTON_SECONDARY_IDLE,
+      dark: commonPalette.BUTTON_SECONDARY_HOVER,
+    },
   },
   typography: {
     fontFamily: commonPalette.FONT_GLOBAL,
   },
   components: {
+    MuiFab: {
+      defaultProps: {
+        sx: {
+          position: "fixed",
+          bottom: "20px",
+          // left: "-10px",
+          borderTopLeftRadius: "0px",
+          borderBottomLeftRadius: "0px",
+
+          "&:hover": {
+            backgroundColor: commonPalette.LIGHTPURPLE,
+          },
+        },
+      },
+    },
     MuiButton: {
       defaultProps: {
         sx: {
@@ -148,6 +194,15 @@ const darkTheme = createTheme({
             backgroundColor: commonPalette.PURPLE + "1A",
             color: commonPalette.PURPLE,
             borderRadius: "0 50px 50px 0",
+          },
+        },
+      },
+    },
+    MuiDrawer: {
+      styleOverrides: {
+        root: {
+          "& .MuiDrawer-paper": {
+            backgroundColor: darkThemePalette.BG4,
           },
         },
       },

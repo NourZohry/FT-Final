@@ -1,5 +1,5 @@
 import React from "react";
-import { TextField, FormControl, InputLabel, MenuItem, Select, Container, Modal, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Button, Typography, Box, Drawer, Switch } from "@mui/material";
+import { useTheme, TextField, FormControl, InputLabel, MenuItem, Select, Container, Modal, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Button, Typography, Box, Drawer, Switch } from "@mui/material";
 import { useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,6 +9,8 @@ import { addNewBoard, fetchBoards, addListToBoard } from "../../slices/boardsSli
 
 export const AddNewBoard = () => {
   const dispatch = useDispatch();
+
+  const theme = useTheme();
 
   const [newBoardName, setNewBoardName] = useState("");
 
@@ -54,7 +56,7 @@ export const AddNewBoard = () => {
       <Typography
         id="modal-modal-description"
         sx={{ mt: 2, mb: 1 }}
-        color={"secondary.dark"}
+        color={"primary.dark"}
         fontSize={"12px"}
         fontWeight={"700"}
       >
@@ -71,7 +73,7 @@ export const AddNewBoard = () => {
       <Typography
         id="modal-modal-description"
         sx={{ mt: 2, mb: 1 }}
-        color={"secondary.dark"}
+        color={"primary.dark"}
         fontSize={"12px"}
         fontWeight={"700"}
       >
@@ -89,7 +91,7 @@ export const AddNewBoard = () => {
                   onChange={(e) => changeColumnText(i, e)}
                 />
                 <CloseIcon
-                  sx={{ color: "secondary.dark" }}
+                  sx={{ color: "secondary.dark", "&:hover": {cursor: "pointer"} }}
                   onClick={() => deleteColumn(i)}
                 />
               </>
@@ -104,6 +106,19 @@ export const AddNewBoard = () => {
           id="basic-button"
           fullWidth
           onClick={() => addColumn()}
+          sx={{
+            backgroundColor: theme.palette.mode === "light" ? "#635FC71A" : "#FFFFFF",
+            color: "#635FC7",
+            textTransform: "none",
+            boxShadow: "none",
+            borderRadius: "20px",
+            "&:hover": {
+              backgroundColor: theme.palette.mode === "light" ? "#635FC740" : "#FFFFFF",
+              color: "#635FC7",
+              textTransform: "none",
+              boxShadow: "none",
+              borderRadius: "20px",            } 
+          }}
         >
           + Add New Column
         </Button>
