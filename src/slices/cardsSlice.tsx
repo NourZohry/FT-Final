@@ -21,7 +21,7 @@ const initialState = {
 };
 
 export const fetchCards = createAsyncThunk("cards/fetchCards", async (listId: string) => {
-  const response = await fetch("https://api.trello.com/1/lists/" + listId + "/cards?key=c7402336c002e9d44024966d4591bd29&token=ATTA859fe62b508ce78f6c665b7ca8298d724597956bcedb673e4ffc1bac284faeb8F9C234F6");
+  const response = await fetch("https://api.trello.com/1/lists/" + listId + "/cards?key=" + process.env.REACT_APP_API_KEY + "&token=" + process.env.REACT_APP_TOKEN);
   const data = await response.json();
   return [data, listId];
 });
@@ -40,7 +40,7 @@ export const addCard = createAsyncThunk("cards/addCard", async (dataObj: AddCard
         name: dataObj.name,
         desc: dataObj.desc,
       }) +
-      "&key=c7402336c002e9d44024966d4591bd29&token=ATTA859fe62b508ce78f6c665b7ca8298d724597956bcedb673e4ffc1bac284faeb8F9C234F6",
+      "&key=" + process.env.REACT_APP_API_KEY + "&token=" + process.env.REACT_APP_TOKEN,
     {
       method: "POST",
     }
@@ -66,7 +66,7 @@ export const updateCard = createAsyncThunk("cards/updateCard", async (dataObj: U
         name: dataObj.name,
         desc: dataObj.desc,
       }) +
-      "&key=c7402336c002e9d44024966d4591bd29&token=ATTA859fe62b508ce78f6c665b7ca8298d724597956bcedb673e4ffc1bac284faeb8F9C234F6",
+      "&key=" + process.env.REACT_APP_API_KEY + "&token=" + process.env.REACT_APP_TOKEN,
     {
       method: "PUT",
     }
@@ -79,7 +79,7 @@ export const updateCard = createAsyncThunk("cards/updateCard", async (dataObj: U
 export const editCardList = createAsyncThunk("cards/editCardList", async (dataObj: [string, string]) => {
   let cardId = dataObj[0];
   let listId = dataObj[1];
-  const response = await fetch("https://api.trello.com/1/cards/" + cardId + "?idList=" + listId + "&key=c7402336c002e9d44024966d4591bd29&token=ATTA859fe62b508ce78f6c665b7ca8298d724597956bcedb673e4ffc1bac284faeb8F9C234F6", {
+  const response = await fetch("https://api.trello.com/1/cards/" + cardId + "?idList=" + listId + "&key=" + process.env.REACT_APP_API_KEY + "&token=" + process.env.REACT_APP_TOKEN, {
     method: "PUT",
   });
   const data = await response.json();
@@ -87,7 +87,7 @@ export const editCardList = createAsyncThunk("cards/editCardList", async (dataOb
 });
 
 export const deleteCard = createAsyncThunk("cards/deleteCard", async (cardId: string) => {
-  const response = await fetch("https://api.trello.com/1/cards/" + cardId + "?key=c7402336c002e9d44024966d4591bd29&token=ATTA859fe62b508ce78f6c665b7ca8298d724597956bcedb673e4ffc1bac284faeb8F9C234F6", {
+  const response = await fetch("https://api.trello.com/1/cards/" + cardId + "?key=" + process.env.REACT_APP_API_KEY + "&token=" + process.env.REACT_APP_TOKEN, {
     method: "DELETE",
   });
   const data = await response.json();

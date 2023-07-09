@@ -19,7 +19,7 @@ const initialState = {
 };
 
 export const fetchLists = createAsyncThunk("lists/fetchLists", async (boardId: string) => {
-  const response = await fetch("https://api.trello.com/1/boards/" + boardId + "/lists?key=c7402336c002e9d44024966d4591bd29&token=ATTA859fe62b508ce78f6c665b7ca8298d724597956bcedb673e4ffc1bac284faeb8F9C234F6");
+  const response = await fetch("https://api.trello.com/1/boards/" + boardId + "/lists?key=" + process.env.REACT_APP_API_KEY + "&token=" + process.env.REACT_APP_TOKEN);
   const data = await response.json();
   return data;
 });
@@ -27,7 +27,7 @@ export const fetchLists = createAsyncThunk("lists/fetchLists", async (boardId: s
 export const deleteList = createAsyncThunk("lists/deleteList", async (listId: string) => {
 
   const jsondata = JSON.stringify({ closed:true});
-  const response = await fetch("https://api.trello.com/1/lists/" +listId+ "?key=c7402336c002e9d44024966d4591bd29&token=ATTA859fe62b508ce78f6c665b7ca8298d724597956bcedb673e4ffc1bac284faeb8F9C234F6",     {
+  const response = await fetch("https://api.trello.com/1/lists/" +listId+ "?key=" + process.env.REACT_APP_API_KEY + "&token=" + process.env.REACT_APP_TOKEN,     {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: jsondata,
@@ -38,7 +38,7 @@ export const deleteList = createAsyncThunk("lists/deleteList", async (listId: st
 });
 
 // export const archiveList = createAsyncThunk("lists/archiveList", async (listId) => {
-//   const response = await fetch("https://api.trello.com/1/lists/"+listId+"/closed?key=c7402336c002e9d44024966d4591bd29&token=ATTA859fe62b508ce78f6c665b7ca8298d724597956bcedb673e4ffc1bac284faeb8F9C234F6");
+//   const response = await fetch("https://api.trello.com/1/lists/"+listId+"/closed?key=" + process.env.REACT_APP_API_KEY + "&token=" + process.env.REACT_APP_TOKEN);
 //   const data = await response.json();
 //   return data;
 // });

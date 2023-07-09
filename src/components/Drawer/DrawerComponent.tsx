@@ -22,6 +22,8 @@ import { fetchBoards, setSelectedBoard } from "../../slices/boardsSlice";
 import { AppDispatch } from "../../app/store";
 
 
+import useMediaQuery from '@mui/material/useMediaQuery';
+
 export const DrawerComponent = () => {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -39,10 +41,20 @@ export const DrawerComponent = () => {
     dispatch(fetchBoards());
   }, []);
 
+  const matches = useMediaQuery('(min-width:400px)');
+
+  // return <span>{`(min-width:600px) matches: ${matches}`}</span>;
+
+
   return (
     <>
+    
       <CustomModal />
+      {!matches && <PageContent isDrawerOpen={isDrawerOpen} board={boards && selectedBoard ? boards.find((boardItem:any) => boardItem.id === selectedBoard.id) : ""} />}
+    {/* {!matches &&         <Box sx={{ flexGrow: 1, marginLeft: isDrawerOpen ? 0 : "-260px" }}>
+<PageContent isDrawerOpen={isDrawerOpen} board={boards && selectedBoard ? boards.find((boardItem:any) => boardItem.id === selectedBoard.id) : ""} /></Box>} */}
 
+{matches && <>
       <Box sx={{ display: "flex" }}>
         <Drawer
           sx={{
@@ -178,9 +190,9 @@ export const DrawerComponent = () => {
         <VisibilityIcon />
       </Fab>
 
-      {/* <Box sx={{display: 'absolute', top: "0px"}}>
-                  <VisibilityIcon />
-      </Box> */}
+      
     </>
+  }
+  </>
   );
 };

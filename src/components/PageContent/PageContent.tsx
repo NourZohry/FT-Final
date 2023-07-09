@@ -10,6 +10,9 @@ import KanbanDark from "../../assets/kanban-darkmode.svg";
 import KanbanLight from "../../assets/kanban-lightmode.svg";
 import { AppDispatch } from "../../app/store";
 
+import useMediaQuery from '@mui/material/useMediaQuery';
+
+
 function calculateCardCountForList(cards: any, listId: string) {
   return Object.keys(cards).map((key, it) => {
     if (key === listId) {
@@ -50,11 +53,14 @@ export const PageContent: React.FC<PageContentProps> = ({ isDrawerOpen, board })
 
   const theme = useTheme();
 
+  const matches = useMediaQuery('(min-width:400px)');
+
+
   return (
     <>
       <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
         <Box
-          sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", border: theme.palette.mode === "light" ? "1px solid #E4EBFA" : "1px solid #3E3F4E", backgroundColor: "info.light" }}
+          sx={{  display: "flex", justifyContent: "space-between", alignItems: "center", border: theme.palette.mode === "light" ? "1px solid #E4EBFA" : "1px solid #3E3F4E", backgroundColor: "info.light" }}
           p={2}
         >
           <Box sx={{ display: "flex", gap: "20px", alignItems: "center" }}>
@@ -92,7 +98,8 @@ export const PageContent: React.FC<PageContentProps> = ({ isDrawerOpen, board })
                 dispatch(setModal("AddTask"));
               }}
             >
-              + Add New Task
+              {!matches && "+"}
+              {matches && "+ Add New Task"}
             </Button>
             <Menu
               id="basic-menu"
@@ -164,7 +171,7 @@ export const PageContent: React.FC<PageContentProps> = ({ isDrawerOpen, board })
 
         {/* {console.log(Object.keys(cards))} */}
         {isLoading === false && contents.length !== 0 && (
-          <Box sx={{ flexGrow: 1, backgroundColor: "secondary.main", display: "flex", gap: "10px" }}>
+          <Box sx={{ flexGrow: 1, backgroundColor: "secondary.main", display: "flex", gap: "10px", minWidth: "fit-content" }}>
             {contents.map((list: any, i: number) => {
               return (
                 <Box

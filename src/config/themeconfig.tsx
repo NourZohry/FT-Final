@@ -34,7 +34,7 @@ const lightTheme = createTheme({
   palette: {
     mode: "light",
     background: {
-      default: lightThemePalette.BG3,
+      default: lightThemePalette.BG,
     },
     primary: {
       main: commonPalette.PURPLE,
