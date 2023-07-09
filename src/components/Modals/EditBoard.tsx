@@ -6,9 +6,18 @@ import { setClosed } from "../../slices/customModalSlice";
 
 import { addListToBoard, editBoard, fetchBoards } from "../../slices/boardsSlice";
 import { deleteList } from "../../slices/listsSlice";
+import { AppDispatch } from "../../app/store";
 
-export const EditBoard = ({ board, lists }) => {
-  const dispatch = useDispatch();
+interface EditBoardProps {
+  board: {
+    name: string,
+    id: string
+  };
+  lists: any[];
+}
+
+export const EditBoard: React.FC<EditBoardProps> = ({ board, lists }) => {
+  const dispatch = useDispatch<AppDispatch>();
 
   const theme = useTheme();
 
@@ -20,13 +29,13 @@ export const EditBoard = ({ board, lists }) => {
     setColumnText([...columnText, ""]);
   };
 
-  const deleteColumn = (i) => {
+  const deleteColumn = (i: number) => {
     let copy = [...columnText];
     copy.splice(i, 1);
     setColumnText(copy);
   };
 
-  const changeColumnText = (column, e) => {
+  const changeColumnText = (column: number, e: React.ChangeEvent<HTMLInputElement>) => {
     let copy = [...columnText];
     copy[column] = e.target.value;
     setColumnText(copy);
@@ -34,30 +43,14 @@ export const EditBoard = ({ board, lists }) => {
 
   const handleEditBoard = () => {
     dispatch(setClosed());
-    // columnText.map(column => {
-    //   if (lists.find(list => list.name === column)) {}
 
-    // })
-    // lists.map(list => {
-    //   if (columnText.filter(columnItem => columnItem === list.name).length > 0) {
-    //     console.log("Do nothing, condition is fulfilled, list already exists")
-    //   }
-    //   else if (columnText.filter(columnItem => columnItem === list.name).length === 0) {
-
-    //   }
-    //   // else {
-    //   //   console.log("Create list to add here");
-    //   // }
-    // })
-
-    // if (columnText.length >= lists.length) {
-    columnText.map((column) => {
+    columnText.map((column: string) => {
       if (lists.filter((list) => list.name === column).length > 0) {
-        console.log("nothing to do here");
+        // console.log("nothing to do here");
       }
       if (lists.filter((list) => list.name === column).length === 0) {
-        console.log("add the new column here from 'column'");
-        console.log(column);
+        // console.log("add the new column here from 'column'");
+        // console.log(column);
         dispatch(addListToBoard([board.id, column]));
       }
     });
@@ -119,7 +112,7 @@ export const EditBoard = ({ board, lists }) => {
                   fullWidth
                   value={column}
                   size="small"
-                  onChange={(e) => changeColumnText(i, e)}
+                  onChange={(e:React.ChangeEvent<HTMLInputElement>) => changeColumnText(i, e)}
                 />
                 <CloseIcon
                   sx={{ color: "secondary.dark", "&:hover": {cursor: "pointer"} }}

@@ -1,5 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// interface State {
+//   isOpen: boolean;
+//   content: string;
+//   data: any[];
+// }
+  
 const initialState = {
   isOpen: false,
   content: "",
@@ -27,6 +33,5 @@ export const themeSlice = createSlice({
 });
 
 export const { setOpen, setClosed, setModal, setData } = themeSlice.actions;
-export const getIsOpen = (state) => state.boardmodal.isOpen;
 
 export default themeSlice.reducer;

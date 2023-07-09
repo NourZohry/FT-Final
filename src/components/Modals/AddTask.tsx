@@ -1,39 +1,41 @@
-import { Box, Button, MenuItem, Select, TextField, Typography } from "@mui/material";
+import { SelectChangeEvent, Box, Button, MenuItem, Select, TextField, Typography } from "@mui/material";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchBoards } from "../../slices/boardsSlice";
-import { updateCard } from "../../slices/cardsSlice";
+import { useDispatch } from "react-redux";
+import { addCard } from "../../slices/cardsSlice";
 import { setClosed } from "../../slices/customModalSlice";
+import { fetchLists } from "../../slices/listsSlice";
+import { AppDispatch } from "../../app/store";
 
-export const EditTask = ({ card }) => {
-  const dispatch = useDispatch();
+interface AddTaskProps {
+  board: any;
+  lists: any[];
+}
 
-  console.log(card);
+export const AddTask: React.FC<AddTaskProps>  = ({ board, lists }) => {
+  const dispatch = useDispatch<AppDispatch>();
 
-  const board = useSelector((state) => state.boards.selectedBoard);
-  const lists = useSelector((state) => state.lists.contents);
-
-  const [selectedStatus, setSelectedStatus] = React.useState(card.idList);
-  const handleStatusChange = (e) => {
+  const [selectedStatus, setSelectedStatus] = React.useState("");
+  const handleStatusChange = (e:SelectChangeEvent<any>) => {
     console.log(e.target.value);
     setSelectedStatus(e.target.value);
   };
 
-  const [name, setName] = React.useState(card.name);
-  const handleNameChange = (e) => {
+  const [name, setName] = React.useState("");
+  const handleNameChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.value);
     setName(e.target.value);
   };
 
-  const [description, setDescription] = React.useState(card.desc);
-  const handleDescriptionChange = (e) => {
+  const [description, setDescription] = React.useState("");
+  const handleDescriptionChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.value);
     setDescription(e.target.value);
   };
 
   const handleUpdate = () => {
     dispatch(setClosed());
-    dispatch(updateCard({ status: selectedStatus, name: name, desc: description, cardId: card.id })).then(dispatch(fetchBoards()));
+    dispatch(addCard({ status: selectedStatus, name: name, desc: description }))
+    dispatch(fetchLists(board.id));
   };
 
   return (
@@ -42,7 +44,7 @@ export const EditTask = ({ card }) => {
         fontSize={"18px"}
         fontWeight={"700"}
       >
-        Edit Task
+        Add New Task
       </Typography>
       <Typography
         id="modal-modal-description"
@@ -61,7 +63,6 @@ export const EditTask = ({ card }) => {
         placeholder="e.g. Take a coffee break"
         size={"small"}
         onChange={handleNameChange}
-        defaultValue={card.name}
       />
 
       <Typography
@@ -83,7 +84,6 @@ export const EditTask = ({ card }) => {
         onChange={handleDescriptionChange}
         multiline
         rows={4}
-        defaultValue={card.desc}
       />
 
       <Typography
@@ -105,7 +105,7 @@ export const EditTask = ({ card }) => {
           size={"small"}
           // onChange={handleChange}
         >
-          {lists.map((list, i) => {
+          {lists.map((list:any, i:number) => {
             return (
               <MenuItem
                 key={i}
@@ -118,27 +118,6 @@ export const EditTask = ({ card }) => {
         </Select>
       )}
 
-      {/* <FormControl fullWidth>
-        <InputLabel
-          shrink={false}
-          sx={{ opacity: status ? 0 : 100 }}
-        >
-          {listOfCard && listOfCard.name}
-        </InputLabel>
-        <Select
-          value={status}
-          defaultValue={listOfCard && listOfCard.name}
-          onChange={handleChange}
-        >
-          {lists &&
-            listOfCard &&
-            lists
-              .filter((list) => list.boardId === listOfCard.boardId)
-              .map((list) => {
-                return <MenuItem value={list}>{list.name}</MenuItem>;
-              })}
-        </Select>
-      </FormControl> */}
 
       <Box mt={2}>
         <Button
@@ -147,7 +126,7 @@ export const EditTask = ({ card }) => {
           fullWidth
           onClick={() => handleUpdate()}
         >
-          Save Changes
+          Create Task
         </Button>
       </Box>
     </>

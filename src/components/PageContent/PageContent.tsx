@@ -5,45 +5,43 @@ import { useDispatch, useSelector } from "react-redux";
 import { setData, setModal } from "../../slices/customModalSlice";
 import { fetchLists } from "../../slices/listsSlice";
 import { ListCard } from "../ListCard/ListCard";
-// import { fetchBoards, getBoards, setSelectedBoard } from "../../slices/boardsSlice";
 
 import KanbanDark from "../../assets/kanban-darkmode.svg";
 import KanbanLight from "../../assets/kanban-lightmode.svg";
+import { AppDispatch } from "../../app/store";
 
-// type BoardType = {
-//   board: any;
-// }
-
-// type ListType = {
-//   name: string
-//   length: number
-// }
-
-function calculateCardCountForList(cards, listId) {
+function calculateCardCountForList(cards: any, listId: string) {
   return Object.keys(cards).map((key, it) => {
     if (key === listId) {
-      return cards[key].filter((card) => card.idList === listId).length;
+      return cards[key].filter((card: any) => card.idList === listId).length;
     }
     return null;
   });
 }
 
-export const PageContent = ({ isDrawerOpen, board }) => {
-  const dispatch = useDispatch();
+interface PageContentProps {
+  isDrawerOpen: boolean;
+  board: any;
+}
+
+export const PageContent: React.FC<PageContentProps> = ({ isDrawerOpen, board }) => {
+  const dispatch = useDispatch<AppDispatch>();
 
   React.useEffect(() => {
-    if (board && board.id) dispatch(fetchLists(board.id));
+    if (board && board.id) {
+      dispatch(fetchLists(board.id));
+    }
   }, [dispatch, board]);
 
-  const contents = useSelector((state) => state.lists.contents);
-  const isLoading = useSelector((state) => state.lists.isLoading);
+  const contents = useSelector((state: any) => state.lists.contents);
+  const isLoading = useSelector((state: any) => state.lists.isLoading);
   // const error = useSelector((state) => state.lists.error)
 
-  const cards = useSelector((state) => state.cards.contents);
+  const cards = useSelector((state: any) => state.cards.contents);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const openMenu = Boolean(anchorEl);
-  const handleClick = (event) => {
+  const handleClick = (event: React.SetStateAction<any>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleCloseMenu = () => {
@@ -167,7 +165,7 @@ export const PageContent = ({ isDrawerOpen, board }) => {
         {/* {console.log(Object.keys(cards))} */}
         {isLoading === false && contents.length !== 0 && (
           <Box sx={{ flexGrow: 1, backgroundColor: "secondary.main", display: "flex", gap: "10px" }}>
-            {contents.map((list, i) => {
+            {contents.map((list: any, i: number) => {
               return (
                 <Box
                   sx={{ display: "flex", flexDirection: "column", gap: "10px" }}

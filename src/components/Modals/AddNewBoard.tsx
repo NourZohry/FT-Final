@@ -5,9 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { setClosed } from "../../slices/customModalSlice";
 
 import { addListToBoard, addNewBoard, fetchBoards } from "../../slices/boardsSlice";
+import { AppDispatch } from "../../app/store";
 
 export const AddNewBoard = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const theme = useTheme();
 
@@ -18,13 +19,13 @@ export const AddNewBoard = () => {
     setColumnText([...columnText, ""]);
   };
 
-  const deleteColumn = (i) => {
+  const deleteColumn = (i: number) => {
     let copy = [...columnText];
     copy.splice(i, 1);
     setColumnText(copy);
   };
 
-  const changeColumnText = (column, e) => {
+  const changeColumnText = (column: number, e: React.ChangeEvent<HTMLInputElement>) => {
     let copy = [...columnText];
     copy[column] = e.target.value;
     setColumnText(copy);
@@ -87,7 +88,7 @@ export const AddNewBoard = () => {
                   fullWidth
                   value={column}
                   size="small"
-                  onChange={(e) => changeColumnText(i, e)}
+                  onChange={(e:React.ChangeEvent<HTMLInputElement>) => changeColumnText(i, e)}
                 />
                 <CloseIcon
                   sx={{ color: "secondary.dark", "&:hover": {cursor: "pointer"} }}

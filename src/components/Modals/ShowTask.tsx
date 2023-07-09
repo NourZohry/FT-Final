@@ -5,13 +5,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchBoards } from "../../slices/boardsSlice";
 import { editCardList } from "../../slices/cardsSlice";
 import { setClosed, setModal } from "../../slices/customModalSlice";
+import { AppDispatch } from "../../app/store";
 
-export const ShowTask = ({ card }) => {
-  const dispatch = useDispatch();
-  const lists = useSelector((state) => state.lists.contents);
+interface ShowTaskProps {
+  card: any;
+}
+
+export const ShowTask: React.FC<ShowTaskProps> = ({ card }) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const lists = useSelector((state:any) => state.lists.contents);
 
   const [selectedStatus, setSelectedStatus] = React.useState("");
-  const handleStatusChange = (e) => {
+  const handleStatusChange = (e:React.SetStateAction<any>) => {
     setSelectedStatus(e.target.value);
   };
 
@@ -21,12 +26,13 @@ export const ShowTask = ({ card }) => {
 
   const handleUpdate = () => {
     dispatch(setClosed());
-    dispatch(editCardList([card.id, selectedStatus])).then(dispatch(fetchBoards()));
+    dispatch(editCardList([card.id, selectedStatus]));
+    dispatch(fetchBoards());
   };
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openMenu = Boolean(anchorEl);
-  const handleClick = (event) => {
+  const handleClick = (event: React.SetStateAction<any>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleCloseMenu = () => {
@@ -103,7 +109,7 @@ export const ShowTask = ({ card }) => {
           size={"small"}
           defaultValue={selectedStatus}
         >
-          {lists.map((list, i) => {
+          {lists.map((list:any, i:number) => {
             return (
               <MenuItem
                 key={i}

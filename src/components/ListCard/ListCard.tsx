@@ -3,16 +3,22 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCards } from "../../slices/cardsSlice";
 import { setData, setModal } from "../../slices/customModalSlice";
+import { AppDispatch } from "../../app/store";
 
+interface ListCardProps {
+  list: {
+    id: string;
+  };
+}
 
-export const ListCard = ({ list }) => {
-  const dispatch = useDispatch();
+export const ListCard: React.FC<ListCardProps> = ({ list }) => {
+  const dispatch = useDispatch<AppDispatch>();
 
   React.useEffect(() => {
     if (list.id) dispatch(fetchCards(list.id));
   }, [dispatch, list]);
 
-  const cards = useSelector((state) => state.cards.contents);
+  const cards = useSelector((state: any) => state.cards.contents);
   // const selected = useSelector((state) => state.cards.selected);
   // const isLoading = useSelector((state) => state.cards.isLoading)
   // const error = useSelector((state) => state.cards.error)
@@ -31,8 +37,8 @@ export const ListCard = ({ list }) => {
           Object.keys(cards).map((key, i) => {
             return (
               <Box key={i}>
-                {cards[key].filter((card) => card.idList === list.id).length > 0 &&
-                  cards[key].map((card, j) => {
+                {cards[key].filter((card: any) => card.idList === list.id).length > 0 &&
+                  cards[key].map((card: any, j: number) => {
                     // return <Typography>{card.idList === list.id && card.name}</Typography>;
                     return (
                       <Box
@@ -41,7 +47,7 @@ export const ListCard = ({ list }) => {
                           dispatch(setData(card));
                           dispatch(setModal("ShowTask"));
                         }}
-                        sx={{ backgroundColor: "info.light", width: "200px", borderRadius: "8px", boxShadow: "0px 4px 6px 0px rgba(54, 78, 126, 0.10)" }}
+                        sx={{ "&:hover": {cursor: "pointer"}, backgroundColor: "info.light", width: "200px", borderRadius: "8px", boxShadow: "0px 4px 6px 0px rgba(54, 78, 126, 0.10)" }}
                         p={2}
                         mb={2}
                       >

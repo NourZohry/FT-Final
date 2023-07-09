@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal, Box } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { setOpen, setClosed, getIsOpen } from "../../slices/customModalSlice";
+import { setOpen, setClosed } from "../../slices/customModalSlice";
 import { AddNewBoard } from "../Modals/AddNewBoard";
 import { DeleteBoard } from "../Modals/DeleteBoard";
 import { EditBoard } from "../Modals/EditBoard";
@@ -25,17 +25,17 @@ const modalStyle = {
 
 export const CustomModal = () => {
   const dispatch = useDispatch();
-  const content = useSelector((state) => state.custommodal.content);
-  const open = useSelector((state) => state.custommodal.isOpen);
-  const data = useSelector((state) => state.custommodal.data);
+  const content = useSelector((state:any) => state.custommodal.content);
+  const open = useSelector((state:any) => state.custommodal.isOpen);
+  const data = useSelector((state:any) => state.custommodal.data);
 
   const didMountRef = React.useRef(false);
   React.useEffect(() => {
-    if (didMountRef.current) dispatch(setOpen(true));
+    if (didMountRef.current) dispatch(setOpen());
     didMountRef.current = true;
   }, [content]);
 
-  const renderSwitch = (key) => {
+  const renderSwitch = (key: string) => {
     // console.log(data);
     switch (key) {
       case "AddNewBoard":

@@ -1,5 +1,20 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
+
+interface Board {
+  id: string;
+  name: string;
+}
+
+interface BoardsState {
+  contents: Board[];
+  isLoading: boolean;
+  error: string | null;
+  selectedBoard: Board | null;
+}
+
+
+
 const initialState = {
   contents: [],
   isLoading: false,
@@ -7,13 +22,13 @@ const initialState = {
   selectedBoard: null
 };
 
-export const fetchBoards = createAsyncThunk("boards/fetchBoards", async (boardId) => {
+export const fetchBoards = createAsyncThunk("boards/fetchBoards", async () => {
   const response = await fetch("https://api.trello.com/1/members/me/boards?key=c7402336c002e9d44024966d4591bd29&token=ATTA859fe62b508ce78f6c665b7ca8298d724597956bcedb673e4ffc1bac284faeb8F9C234F6");
   const data = await response.json();
   return data;
 });
 
-export const addNewBoard = createAsyncThunk("boards/addNewBoard", async (boardName) => {
+export const addNewBoard = createAsyncThunk("boards/addNewBoard", async (boardName: string) => {
   const response = await fetch("https://api.trello.com/1/boards/?name=" + boardName + "&defaultLists=false&key=c7402336c002e9d44024966d4591bd29&token=ATTA859fe62b508ce78f6c665b7ca8298d724597956bcedb673e4ffc1bac284faeb8F9C234F6", {
     method: "POST",
   });
@@ -21,7 +36,7 @@ export const addNewBoard = createAsyncThunk("boards/addNewBoard", async (boardNa
   return data;
 });
 
-export const deleteBoard = createAsyncThunk("boards/deleteBoard", async (boardId) => {
+export const deleteBoard = createAsyncThunk("boards/deleteBoard", async (boardId: string) => {
   const response = await fetch("https://api.trello.com/1/boards/" + boardId + "?key=c7402336c002e9d44024966d4591bd29&token=ATTA859fe62b508ce78f6c665b7ca8298d724597956bcedb673e4ffc1bac284faeb8F9C234F6", {
     method: "DELETE",
   });
@@ -29,7 +44,8 @@ export const deleteBoard = createAsyncThunk("boards/deleteBoard", async (boardId
   return data;
 });
 
-export const editBoard = createAsyncThunk("boards/editBoard", async (dataObj) => {
+export const editBoard = createAsyncThunk("boards/editBoard", async (dataObj: [string, string]) => {
+
   const response = await fetch("https://api.trello.com/1/boards/" + dataObj[0] + "?name=" + dataObj[1] + "&key=c7402336c002e9d44024966d4591bd29&token=ATTA859fe62b508ce78f6c665b7ca8298d724597956bcedb673e4ffc1bac284faeb8F9C234F6", {
     method: "PUT",
   });
@@ -37,7 +53,7 @@ export const editBoard = createAsyncThunk("boards/editBoard", async (dataObj) =>
   return data;
 });
 
-export const addListToBoard = createAsyncThunk("boards/addListToBoard", async (dataObj) => {
+export const addListToBoard = createAsyncThunk("boards/addListToBoard", async (dataObj: [string, string]) => {
   const response = await fetch("https://api.trello.com/1/boards/" + dataObj[0] + "/lists?name=" + dataObj[1] + "&key=c7402336c002e9d44024966d4591bd29&token=ATTA859fe62b508ce78f6c665b7ca8298d724597956bcedb673e4ffc1bac284faeb8F9C234F6", {
     method: "POST",
   });
@@ -72,12 +88,12 @@ export const boardsSlice = createSlice({
     });
     builder.addCase(fetchBoards.rejected, (state, action) => {
       state.isLoading = false;
-      state.error = action.error.message;
+      // state.error = action.error.message;
     });
   },
 });
 
-export const getBoards = (state) => state.contents;
+export const getBoards = (state: {contents: BoardsState}) => state.contents;
 export const {setSelectedBoard} = boardsSlice.actions;
 
 

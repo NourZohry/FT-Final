@@ -19,20 +19,21 @@ import { CustomModal } from "../CustomModal/CustomModal";
 import { setModal } from "../../slices/customModalSlice";
 
 import { fetchBoards, setSelectedBoard } from "../../slices/boardsSlice";
+import { AppDispatch } from "../../app/store";
 
 
 export const DrawerComponent = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const theme = useTheme();
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(true);
 
   // const [selectedBoard, setSelectedBoard] = useState();
-  const selectedBoard = useSelector((state) => state.boards.selectedBoard);
+  const selectedBoard = useSelector((state:any) => state.boards.selectedBoard);
 
 
-  const boards = useSelector((state) => state.boards.contents);
+  const boards = useSelector((state:any) => state.boards.contents);
 
   React.useEffect(() => {
     dispatch(fetchBoards());
@@ -86,7 +87,7 @@ export const DrawerComponent = () => {
                 <List sx={{ pt: 0, mr: 1.2 }}>
                   {boards &&
                     boards.length !== 0 &&
-                    boards.map((testBoard, i) => {
+                    boards.map((testBoard: any, i: number) => {
                       return (
                         <ListItem
                           disablePadding
@@ -155,7 +156,7 @@ export const DrawerComponent = () => {
         <Box sx={{ flexGrow: 1, marginLeft: isDrawerOpen ? 0 : "-260px" }}>
           {/* Page Content Here */}
           {/* {console.log(boards.filter(boardItem => boardItem === selectedBoard))} */}
-          <PageContent isDrawerOpen={isDrawerOpen} board={boards && selectedBoard ? boards.find(boardItem => boardItem.id === selectedBoard.id) : ""} />
+          <PageContent isDrawerOpen={isDrawerOpen} board={boards && selectedBoard ? boards.find((boardItem:any) => boardItem.id === selectedBoard.id) : ""} />
         </Box>
       </Box>
 

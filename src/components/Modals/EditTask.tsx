@@ -1,34 +1,46 @@
-import { Box, Button, MenuItem, Select, TextField, Typography } from "@mui/material";
+import { SelectChangeEvent, Box, Button, MenuItem, Select, TextField, Typography } from "@mui/material";
 import React from "react";
-import { useDispatch } from "react-redux";
-import { addCard } from "../../slices/cardsSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchBoards } from "../../slices/boardsSlice";
+import { updateCard } from "../../slices/cardsSlice";
 import { setClosed } from "../../slices/customModalSlice";
-import { fetchLists } from "../../slices/listsSlice";
+import { AppDispatch } from "../../app/store";
 
-export const AddTask = ({ board, lists }) => {
-  const dispatch = useDispatch();
+interface EditTaskProps {
+  card: any;
+}
 
-  const [selectedStatus, setSelectedStatus] = React.useState("");
-  const handleStatusChange = (e) => {
+
+export const EditTask: React.FC<EditTaskProps> = ({ card }) => {
+  const dispatch = useDispatch<AppDispatch>();
+
+  console.log(card);
+
+  const board = useSelector((state:any) => state.boards.selectedBoard);
+  const lists = useSelector((state:any) => state.lists.contents);
+
+  const [selectedStatus, setSelectedStatus] = React.useState(card.idList);
+  const handleStatusChange = (e:SelectChangeEvent<any>) => {
     console.log(e.target.value);
     setSelectedStatus(e.target.value);
   };
 
-  const [name, setName] = React.useState("");
-  const handleNameChange = (e) => {
+  const [name, setName] = React.useState(card.name);
+  const handleNameChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.value);
     setName(e.target.value);
   };
 
-  const [description, setDescription] = React.useState("");
-  const handleDescriptionChange = (e) => {
+  const [description, setDescription] = React.useState(card.desc);
+  const handleDescriptionChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.value);
     setDescription(e.target.value);
   };
 
   const handleUpdate = () => {
     dispatch(setClosed());
-    dispatch(addCard({ status: selectedStatus, name: name, desc: description })).then(dispatch(fetchLists(board.id)));
+    dispatch(updateCard({ status: selectedStatus, name: name, desc: description, cardId: card.id }))
+    dispatch(fetchBoards());
   };
 
   return (
@@ -37,7 +49,7 @@ export const AddTask = ({ board, lists }) => {
         fontSize={"18px"}
         fontWeight={"700"}
       >
-        Add New Task
+        Edit Task
       </Typography>
       <Typography
         id="modal-modal-description"
@@ -56,6 +68,7 @@ export const AddTask = ({ board, lists }) => {
         placeholder="e.g. Take a coffee break"
         size={"small"}
         onChange={handleNameChange}
+        defaultValue={card.name}
       />
 
       <Typography
@@ -77,6 +90,7 @@ export const AddTask = ({ board, lists }) => {
         onChange={handleDescriptionChange}
         multiline
         rows={4}
+        defaultValue={card.desc}
       />
 
       <Typography
@@ -98,7 +112,7 @@ export const AddTask = ({ board, lists }) => {
           size={"small"}
           // onChange={handleChange}
         >
-          {lists.map((list, i) => {
+          {lists.map((list:any, i:number) => {
             return (
               <MenuItem
                 key={i}
@@ -140,7 +154,7 @@ export const AddTask = ({ board, lists }) => {
           fullWidth
           onClick={() => handleUpdate()}
         >
-          Create Task
+          Save Changes
         </Button>
       </Box>
     </>
